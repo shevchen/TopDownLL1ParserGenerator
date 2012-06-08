@@ -25,28 +25,32 @@ public class ParserWriter {
 				+ "() throws ParseException {");
 		out.println("		Node cur = new Node(\"" + nt.getName() + "\");");
 		out.println("		switch (lex[curLex].text.charAt(0)) {");
-		chars.clear();
 		for (List<GrammarUnit> list : rules.get(nt)) {
+			chars.clear();
 			ffc.addAllFirst(chars, list, 0);
 			if (chars.remove(FirstFollowCounter.EPS)) {
 				chars.addAll(ffc.follow.get(nt));
 			}
 			for (char c : chars) {
-				out.println("			case '" + c + "':");
+				if (c == (char) -1) {
+					out.println("		case (char) -1:");
+				} else {
+					out.println("		case '" + c + "':");
+				}
 			}
 			for (GrammarUnit g : list) {
 				if (g instanceof Terminal) {
-					out.println("				assertEquals(\"" + g.getName() + "\");");
-					out.println("				cur.addChild(new Node(\"" + g.getName()
+					out.println("			assertEquals(\"" + g.getName() + "\");");
+					out.println("			cur.addChild(new Node(\"" + g.getName()
 							+ "\"));");
 				} else {
-					out.println("				cur.addChild(f_" + g.getName() + "());");
+					out.println("			cur.addChild(f_" + g.getName() + "());");
 				}
 			}
-			out.println("				return cur;");
+			out.println("			return cur;");
 		}
-		out.println("			default:");
-		out.println("				throw new ParseException(lex[curLex]);");
+		out.println("		default:");
+		out.println("			throw new ParseException(lex[curLex]);");
 		out.println("		}");
 		out.println("	}");
 	}

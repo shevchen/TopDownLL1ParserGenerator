@@ -3,4 +3,8 @@ public class ParseException extends Exception {
 		super("Parse error at '" + l.text + "': line " + l.lineNumber
 				+ ", character " + l.charNumber);
 	}
+	
+	public ParseException(String message) {
+		super(message);
+	}
 }

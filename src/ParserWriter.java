@@ -69,7 +69,7 @@ public class ParserWriter {
 		out
 				.println("	public void assertEquals(String s) throws ParseException {");
 		out.println("		if (lex[curLex].text.compareTo(s) != 0) {");
-		out.println("			throw new ParseException(lex[curLex]);");
+		out.println("			throw new ParseException(lex[curLex], s);");
 		out.println("		}");
 		out.println("		++curLex;");
 		out.println("	}");

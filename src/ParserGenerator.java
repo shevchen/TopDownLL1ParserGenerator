@@ -11,27 +11,17 @@ public class ParserGenerator {
 		pw = new ParserWriter(rules, start, ffc);
 	}
 
-	public boolean isLL1() {
-		return ffc.isLL1;
-	}
-
-	private void print(Map<NonTerminal, Set<Character>> what) {
-		for (Map.Entry<NonTerminal, Set<Character>> e : what.entrySet()) {
+	private void print(Map<NonTerminal, Set<Terminal>> what) {
+		for (Map.Entry<NonTerminal, Set<Terminal>> e : what.entrySet()) {
 			System.out.print(e.getKey() + ": ");
 			boolean first = true;
-			for (Character c : e.getValue()) {
+			for (Terminal t : e.getValue()) {
 				if (!first) {
 					System.out.print(", ");
 				} else {
 					first = false;
 				}
-				if (c == FirstFollowCounter.EPS) {
-					System.out.print("eps");
-				} else if (c == FirstFollowCounter.EOL) {
-					System.out.print("eol");
-				} else {
-					System.out.print(c);
-				}
+				System.out.print("[" + t + "]");
 			}
 			System.out.println();
 		}
@@ -49,10 +39,7 @@ public class ParserGenerator {
 		System.out.println();
 	}
 
-	public void writeFile(String name) throws NonLL1GrammarException {
-		if (!ffc.isLL1) {
-			throw new NonLL1GrammarException();
-		}
+	public void writeFile(String name) {
 		try {
 			pw.writeFile(name);
 		} catch (FileNotFoundException e) {

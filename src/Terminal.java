@@ -1,12 +1,23 @@
-public class Terminal implements GrammarUnit {
-	private String text;
+public class Terminal implements GrammarUnit, Comparable<Terminal> {
+	private int id;
+	private String regex;
 
-	public Terminal(String text) {
-		this.text = text;
+	public Terminal(int id, String regex) {
+		this.id = id;
+		this.regex = (regex == null) ? null : ("^" + regex);
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	@Override
 	public String toString() {
-		return text;
+		return regex;
+	}
+
+	@Override
+	public int compareTo(Terminal o) {
+		return id - o.id;
 	}
 }

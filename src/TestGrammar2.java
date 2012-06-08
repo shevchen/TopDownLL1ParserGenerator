@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class TestGrammar2 {
 	public static void main(String[] args) {
@@ -11,12 +13,12 @@ public class TestGrammar2 {
 		NonTerminal T = new NonTerminal("T");
 		NonTerminal T2 = new NonTerminal("T2");
 		NonTerminal F = new NonTerminal("F");
-		Terminal plus = new Terminal("+");
-		Terminal mult = new Terminal("*");
-		Terminal open = new Terminal("(");
-		Terminal close = new Terminal(")");
-		Terminal n = new Terminal("n");
-		Terminal eps = new Terminal("");
+		Terminal plus = new Terminal(1, "\\\\+");
+		Terminal mult = new Terminal(2, "\\\\*");
+		Terminal open = new Terminal(3, "\\\\(");
+		Terminal close = new Terminal(4, "\\\\)");
+		Terminal n = new Terminal(5, "n");
+		Terminal eps = new Terminal(FirstFollowCounter.EPS, "");
 		// E
 		Rules r = new Rules();
 		List<GrammarUnit> list = new ArrayList<GrammarUnit>();
@@ -68,25 +70,16 @@ public class TestGrammar2 {
 		ParserGenerator gen = new ParserGenerator(map, E);
 		gen.printFirst();
 		gen.printFollow();
-		System.out.println("LL(1): " + gen.isLL1());
-
+		gen.writeFile("TG2");
+		String s = "n * (n + n) + n";
+		Set<Character> delims = new TreeSet<Character>();
+		delims.add(' ');
+		delims.add('\t');
+		delims.add('\n');
 		// try {
-		// gen.writeFile("TG2");
-		// } catch (NonLL1GrammarException e) {
+		// new TG2(s, delims).getTree();
+		// } catch (ParseException e) {
 		// e.printStackTrace();
 		// }
-
-		String[] lexStr = { "n", "*", "(", "n", "+", "n", ")", "+", "n",
-				"" + (char) -1 };
-		Lexeme[] lex = new Lexeme[lexStr.length];
-		for (int i = 0; i < lexStr.length; ++i) {
-			lex[i] = new Lexeme(lexStr[i], 0, i);
-		}
-		try {
-			new TG2(lex).getTree();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
 	}
 }

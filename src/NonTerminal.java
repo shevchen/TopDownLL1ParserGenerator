@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class NonTerminal implements GrammarUnit {
+public class NonTerminal implements GrammarUnit, Comparable<NonTerminal> {
 	private String name;
 	private List<List<GrammarUnit>> children;
 
@@ -21,5 +21,10 @@ public class NonTerminal implements GrammarUnit {
 
 	public void addChild(List<GrammarUnit> u) {
 		children.add(u);
+	}
+
+	@Override
+	public int compareTo(NonTerminal o) {
+		return name.compareTo(o.name);
 	}
 }

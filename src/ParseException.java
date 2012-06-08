@@ -1,11 +1,11 @@
 public class ParseException extends Exception {
-	public ParseException(Lexeme l, String s) {
-		super("Parse error: expected '" + s + "', found '" + l.text
-				+ "' at line " + l.lineNumber + ", character " + l.charNumber);
+	public ParseException(int lineNum, int charNum, String regex) {
+		super("Parse error: pattern [" + regex + "] not found at line "
+				+ lineNum + ", character " + charNum);
 	}
 
-	public ParseException(Lexeme l) {
-		super("Parse error: unexpected '" + l.text + "' at line "
-				+ l.lineNumber + ", character " + l.charNumber);
+	public ParseException(int lineNum, int charNum, char c) {
+		super("Parse error: unexpected symbol '" + c + "' at line " + lineNum
+				+ ", character " + charNum);
 	}
 }

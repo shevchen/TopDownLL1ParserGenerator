@@ -9,11 +9,11 @@ public class TestGrammar {
 		NonTerminal E = new NonTerminal("E");
 		NonTerminal T = new NonTerminal("T");
 		NonTerminal F = new NonTerminal("F");
-		Terminal plus = new Terminal("+");
-		Terminal mult = new Terminal("*");
-		Terminal open = new Terminal("(");
-		Terminal close = new Terminal(")");
-		Terminal n = new Terminal("n");
+		Terminal plus = new Terminal(1, "+");
+		Terminal mult = new Terminal(2, "*");
+		Terminal open = new Terminal(3, "(");
+		Terminal close = new Terminal(4, ")");
+		Terminal n = new Terminal(5, "n");
 		// E
 		Rules r = new Rules();
 		List<GrammarUnit> list = new ArrayList<GrammarUnit>();
@@ -51,11 +51,5 @@ public class TestGrammar {
 		ParserGenerator gen = new ParserGenerator(map, E);
 		gen.printFirst();
 		gen.printFollow();
-		System.out.println("LL(1): " + gen.isLL1());
-		try {
-			gen.writeFile("TG1");
-		} catch (NonLL1GrammarException e) {
-			e.printStackTrace();
-		}
 	}
 }

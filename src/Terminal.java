@@ -6,7 +6,7 @@ public class Terminal implements GrammarUnit {
 	}
 
 	@Override
-	public String getName() {
+	public String toString() {
 		return text;
 	}
 }

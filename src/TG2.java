@@ -52,8 +52,6 @@ public class TG2 {
 		case (char) -1:
 		case '+':
 		case ')':
-			assertEquals("");
-			cur.addChild(new Node(""));
 			return cur;
 		default:
 			throw new ParseException(lex[curLex]);
@@ -71,8 +69,6 @@ public class TG2 {
 			return cur;
 		case (char) -1:
 		case ')':
-			assertEquals("");
-			cur.addChild(new Node(""));
 			return cur;
 		default:
 			throw new ParseException(lex[curLex]);

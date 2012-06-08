@@ -21,9 +21,8 @@ public class ParserWriter {
 	}
 
 	private void writeMethod(PrintWriter out, NonTerminal nt) {
-		out.println("	private Node f_" + nt.getName()
-				+ "() throws ParseException {");
-		out.println("		Node cur = new Node(\"" + nt.getName() + "\");");
+		out.println("	private Node f_" + nt + "() throws ParseException {");
+		out.println("		Node cur = new Node(\"" + nt + "\");");
 		out.println("		switch (lex[curLex].text.charAt(0)) {");
 		for (List<GrammarUnit> list : rules.get(nt)) {
 			chars.clear();
@@ -40,11 +39,13 @@ public class ParserWriter {
 			}
 			for (GrammarUnit g : list) {
 				if (g instanceof Terminal) {
-					out.println("			assertEquals(\"" + g.getName() + "\");");
-					out.println("			cur.addChild(new Node(\"" + g.getName()
-							+ "\"));");
+					if (g.toString().isEmpty()) {
+						continue;
+					}
+					out.println("			assertEquals(\"" + g + "\");");
+					out.println("			cur.addChild(new Node(\"" + g + "\"));");
 				} else {
-					out.println("			cur.addChild(f_" + g.getName() + "());");
+					out.println("			cur.addChild(f_" + g + "());");
 				}
 			}
 			out.println("			return cur;");
@@ -79,7 +80,7 @@ public class ParserWriter {
 		}
 		out.println();
 		out.println("	public Node getTree() throws ParseException {");
-		out.println("		return f_" + start.getName() + "();");
+		out.println("		return f_" + start + "();");
 		out.println("	}");
 		out.println("}");
 		out.close();

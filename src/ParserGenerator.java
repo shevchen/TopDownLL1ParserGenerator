@@ -17,7 +17,7 @@ public class ParserGenerator {
 
 	private void print(Map<NonTerminal, Set<Character>> what) {
 		for (Map.Entry<NonTerminal, Set<Character>> e : what.entrySet()) {
-			System.out.print(e.getKey().getName() + ": ");
+			System.out.print(e.getKey() + ": ");
 			boolean first = true;
 			for (Character c : e.getValue()) {
 				if (!first) {

@@ -10,7 +10,7 @@ public class Node {
 		this.children = new ArrayList<Node>();
 	}
 
-	public String getName() {
+	public String toString() {
 		return name;
 	}
 

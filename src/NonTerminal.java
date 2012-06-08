@@ -11,7 +11,7 @@ public class NonTerminal implements GrammarUnit {
 	}
 
 	@Override
-	public String getName() {
+	public String toString() {
 		return name;
 	}
 

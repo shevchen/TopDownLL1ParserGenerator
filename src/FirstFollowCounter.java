@@ -21,14 +21,13 @@ public class FirstFollowCounter {
 		isLL1 = checkLL1();
 	}
 
-	boolean addAllFirst(Set<Character> to, List<GrammarUnit> from,
-			int index) {
+	boolean addAllFirst(Set<Character> to, List<GrammarUnit> from, int index) {
 		if (index == from.size()) {
 			return to.add(EPS);
 		}
 		GrammarUnit g = from.get(index);
 		if (g instanceof Terminal) {
-			String text = g.getName();
+			String text = g.toString();
 			if (text.isEmpty()) {
 				return addAllFirst(to, from, index + 1);
 			} else {

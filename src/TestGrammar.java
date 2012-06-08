@@ -51,6 +51,11 @@ public class TestGrammar {
 		ParserGenerator gen = new ParserGenerator(map, E);
 		gen.printFirst();
 		gen.printFollow();
-		System.out.println(gen.isLL1());
+		System.out.println("LL(1): " + gen.isLL1());
+		try {
+			gen.writeFile("TG1");
+		} catch (NonLL1GrammarException e) {
+			e.printStackTrace();
+		}
 	}
 }

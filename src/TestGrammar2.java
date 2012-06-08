@@ -69,10 +69,24 @@ public class TestGrammar2 {
 		gen.printFirst();
 		gen.printFollow();
 		System.out.println("LL(1): " + gen.isLL1());
+
+		// try {
+		// gen.writeFile("TG2");
+		// } catch (NonLL1GrammarException e) {
+		// e.printStackTrace();
+		// }
+
+		String[] lexStr = { "n", "*", "(", "n", "+", "n", ")", "+", "n",
+				"" + (char) -1 };
+		Lexeme[] lex = new Lexeme[lexStr.length];
+		for (int i = 0; i < lexStr.length; ++i) {
+			lex[i] = new Lexeme(lexStr[i], 0, i);
+		}
 		try {
-			gen.writeFile("TG2");
-		} catch (NonLL1GrammarException e) {
+			new TG2(lex).getTree();
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+
 	}
 }

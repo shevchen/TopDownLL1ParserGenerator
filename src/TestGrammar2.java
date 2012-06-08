@@ -7,9 +7,9 @@ public class TestGrammar2 {
 	public static void main(String[] args) {
 		Map<NonTerminal, Rules> map = new HashMap<NonTerminal, Rules>();
 		NonTerminal E = new NonTerminal("E");
-		NonTerminal E2 = new NonTerminal("E'");
+		NonTerminal E2 = new NonTerminal("E2");
 		NonTerminal T = new NonTerminal("T");
-		NonTerminal T2 = new NonTerminal("T'");
+		NonTerminal T2 = new NonTerminal("T2");
 		NonTerminal F = new NonTerminal("F");
 		Terminal plus = new Terminal("+");
 		Terminal mult = new Terminal("*");
@@ -68,6 +68,11 @@ public class TestGrammar2 {
 		ParserGenerator gen = new ParserGenerator(map, E);
 		gen.printFirst();
 		gen.printFollow();
-		System.out.println(gen.isLL1());
+		System.out.println("LL(1): " + gen.isLL1());
+		try {
+			gen.writeFile("TG2");
+		} catch (NonLL1GrammarException e) {
+			e.printStackTrace();
+		}
 	}
 }

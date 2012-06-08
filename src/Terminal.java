@@ -1,9 +1,10 @@
 public class Terminal implements GrammarUnit, Comparable<Terminal> {
 	private int id;
-	private String regex;
+	private String name, regex;
 
-	public Terminal(int id, String regex) {
+	public Terminal(int id, String regex, String name) {
 		this.id = id;
+		this.name = name;
 		this.regex = (regex == null) ? null : ("^" + regex);
 	}
 
@@ -11,9 +12,13 @@ public class Terminal implements GrammarUnit, Comparable<Terminal> {
 		return id;
 	}
 
+	public String getRegex() {
+		return regex;
+	}
+
 	@Override
 	public String toString() {
-		return regex;
+		return name;
 	}
 
 	@Override

@@ -27,24 +27,22 @@ public class ParserWriter {
 		for (List<GrammarUnit> list : rules.get(nt)) {
 			terms.clear();
 			ffc.addAllFirst(terms, list, 0);
-			if (terms.remove(new Terminal(FirstFollowCounter.EPS, ""))) {
+			if (terms.remove(FirstFollowCounter.epsTerm)) {
 				terms.addAll(ffc.follow.get(nt));
 			}
 			out.println("		pattList.clear();");
 			for (Terminal t : terms) {
-				out.println("		pattList.add(Pattern.compile(\"" + t + "\"));");
+				out.println("		pattList.add(Pattern.compile(\"" + t.getRegex()
+						+ "\"));");
 			}
 			out.println("		for (Pattern p : pattList) {");
 			out.println("			Matcher m = p.matcher(s);");
 			out.println("			if (m.find()) {");
 			for (GrammarUnit g : list) {
 				if (g instanceof Terminal) {
-					if (((Terminal) g).getId() == FirstFollowCounter.EPS) {
-						continue;
-					}
-					out.println("				assertEquals(\"" + g + "\");");
-					out.println("				cur.addChild(new Node(\""
-							+ g.toString().substring(1) + "\"));");
+					Terminal tg = (Terminal) g;
+					out.println("				assertEquals(\"" + tg.getRegex() + "\");");
+					out.println("				cur.addChild(new Node(\"" + g + "\"));");
 				} else {
 					out.println("				cur.addChild(f_" + g + "());");
 				}

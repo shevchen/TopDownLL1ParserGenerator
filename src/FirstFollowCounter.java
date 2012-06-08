@@ -9,7 +9,9 @@ public class FirstFollowCounter {
 	private NonTerminal start;
 	public Map<NonTerminal, Set<Terminal>> first, follow;
 
-	static final int EPS = 0, EOF = -1;
+	static final char EPS = 0, EOF = (char) -1;
+	static final Terminal epsTerm = new Terminal(EPS, "", "");
+	static final Terminal eofTerm = new Terminal(EOF, "" + (char) -1, "$");
 
 	public FirstFollowCounter(Map<NonTerminal, Rules> rules, NonTerminal start) {
 		this.rules = rules;
@@ -20,7 +22,7 @@ public class FirstFollowCounter {
 
 	boolean addAllFirst(Set<Terminal> to, List<GrammarUnit> from, int index) {
 		if (index == from.size()) {
-			return to.add(new Terminal(EPS, ""));
+			return to.add(epsTerm);
 		}
 		GrammarUnit g = from.get(index);
 		if (g instanceof Terminal) {
@@ -65,7 +67,7 @@ public class FirstFollowCounter {
 		for (NonTerminal nt : rules.keySet()) {
 			follow.put(nt, new TreeSet<Terminal>());
 		}
-		follow.get(start).add(new Terminal(EOF, "$"));
+		follow.get(start).add(eofTerm);
 		boolean action = true;
 		while (action) {
 			action = false;
@@ -78,7 +80,7 @@ public class FirstFollowCounter {
 									.get((NonTerminal) list.get(i));
 							int prevSize = rightFollow.size();
 							addAllFirst(rightFollow, list, i + 1);
-							if (rightFollow.remove(new Terminal(EPS, ""))) {
+							if (rightFollow.remove(epsTerm)) {
 								rightFollow.addAll(leftFollow);
 							}
 							action |= rightFollow.size() > prevSize;

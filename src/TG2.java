@@ -45,84 +45,17 @@ public class TG2 {
 		}
 	}
 
-	private Node f_E2() throws ParseException {
-		Node cur = new Node("E2");
-		skipDelims();
-		pattList.clear();
-		pattList.add(Pattern.compile("^\\+"));
-		for (Pattern p : pattList) {
-			Matcher m = p.matcher(s);
-			if (m.find()) {
-				assertEquals("^\\+");
-				cur.addChild(new Node("\\+"));
-				cur.addChild(f_T());
-				cur.addChild(f_E2());
-				return cur;
-			}
-		}
-		pattList.clear();
-		pattList.add(Pattern.compile("^$"));
-		pattList.add(Pattern.compile("^\\)"));
-		for (Pattern p : pattList) {
-			Matcher m = p.matcher(s);
-			if (m.find()) {
-				return cur;
-			}
-		}
-		throw new ParseException(lineNum, charNum, s.charAt(0));
-	}
-
-	private Node f_T2() throws ParseException {
-		Node cur = new Node("T2");
-		skipDelims();
-		pattList.clear();
-		pattList.add(Pattern.compile("^\\*"));
-		for (Pattern p : pattList) {
-			Matcher m = p.matcher(s);
-			if (m.find()) {
-				assertEquals("^\\*");
-				cur.addChild(new Node("\\*"));
-				cur.addChild(f_F());
-				cur.addChild(f_T2());
-				return cur;
-			}
-		}
-		pattList.clear();
-		pattList.add(Pattern.compile("^$"));
-		pattList.add(Pattern.compile("^\\+"));
-		pattList.add(Pattern.compile("^\\)"));
-		for (Pattern p : pattList) {
-			Matcher m = p.matcher(s);
-			if (m.find()) {
-				return cur;
-			}
-		}
-		throw new ParseException(lineNum, charNum, s.charAt(0));
-	}
-
-	private Node f_F() throws ParseException {
-		Node cur = new Node("F");
+	private Node f_E() throws ParseException {
+		Node cur = new Node("E");
 		skipDelims();
 		pattList.clear();
 		pattList.add(Pattern.compile("^\\("));
-		for (Pattern p : pattList) {
-			Matcher m = p.matcher(s);
-			if (m.find()) {
-				assertEquals("^\\(");
-				cur.addChild(new Node("\\("));
-				cur.addChild(f_E());
-				assertEquals("^\\)");
-				cur.addChild(new Node("\\)"));
-				return cur;
-			}
-		}
-		pattList.clear();
 		pattList.add(Pattern.compile("^n"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				assertEquals("^n");
-				cur.addChild(new Node("n"));
+				cur.addChild(f_T());
+				cur.addChild(f_E2());
 				return cur;
 			}
 		}
@@ -146,17 +79,88 @@ public class TG2 {
 		throw new ParseException(lineNum, charNum, s.charAt(0));
 	}
 
-	private Node f_E() throws ParseException {
-		Node cur = new Node("E");
+	private Node f_T2() throws ParseException {
+		Node cur = new Node("T2");
+		skipDelims();
+		pattList.clear();
+		pattList.add(Pattern.compile("^\\*"));
+		for (Pattern p : pattList) {
+			Matcher m = p.matcher(s);
+			if (m.find()) {
+				assertEquals("^\\*");
+				cur.addChild(new Node("*"));
+				cur.addChild(f_F());
+				cur.addChild(f_T2());
+				return cur;
+			}
+		}
+		pattList.clear();
+		pattList.add(Pattern.compile("^￿"));
+		pattList.add(Pattern.compile("^\\+"));
+		pattList.add(Pattern.compile("^\\)"));
+		for (Pattern p : pattList) {
+			Matcher m = p.matcher(s);
+			if (m.find()) {
+				assertEquals("^");
+				cur.addChild(new Node(""));
+				return cur;
+			}
+		}
+		throw new ParseException(lineNum, charNum, s.charAt(0));
+	}
+
+	private Node f_E2() throws ParseException {
+		Node cur = new Node("E2");
+		skipDelims();
+		pattList.clear();
+		pattList.add(Pattern.compile("^\\+"));
+		for (Pattern p : pattList) {
+			Matcher m = p.matcher(s);
+			if (m.find()) {
+				assertEquals("^\\+");
+				cur.addChild(new Node("+"));
+				cur.addChild(f_T());
+				cur.addChild(f_E2());
+				return cur;
+			}
+		}
+		pattList.clear();
+		pattList.add(Pattern.compile("^￿"));
+		pattList.add(Pattern.compile("^\\)"));
+		for (Pattern p : pattList) {
+			Matcher m = p.matcher(s);
+			if (m.find()) {
+				assertEquals("^");
+				cur.addChild(new Node(""));
+				return cur;
+			}
+		}
+		throw new ParseException(lineNum, charNum, s.charAt(0));
+	}
+
+	private Node f_F() throws ParseException {
+		Node cur = new Node("F");
 		skipDelims();
 		pattList.clear();
 		pattList.add(Pattern.compile("^\\("));
+		for (Pattern p : pattList) {
+			Matcher m = p.matcher(s);
+			if (m.find()) {
+				assertEquals("^\\(");
+				cur.addChild(new Node("("));
+				cur.addChild(f_E());
+				assertEquals("^\\)");
+				cur.addChild(new Node(")"));
+				return cur;
+			}
+		}
+		pattList.clear();
 		pattList.add(Pattern.compile("^n"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				cur.addChild(f_T());
-				cur.addChild(f_E2());
+				assertEquals("^n");
+				cur.addChild(new Node("n"));
 				return cur;
 			}
 		}

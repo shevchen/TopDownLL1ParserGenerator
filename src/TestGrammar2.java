@@ -13,12 +13,12 @@ public class TestGrammar2 {
 		NonTerminal T = new NonTerminal("T");
 		NonTerminal T2 = new NonTerminal("T2");
 		NonTerminal F = new NonTerminal("F");
-		Terminal plus = new Terminal(1, "\\\\+");
-		Terminal mult = new Terminal(2, "\\\\*");
-		Terminal open = new Terminal(3, "\\\\(");
-		Terminal close = new Terminal(4, "\\\\)");
-		Terminal n = new Terminal(5, "n");
-		Terminal eps = new Terminal(FirstFollowCounter.EPS, "");
+		Terminal plus = new Terminal(1, "\\\\+", "+");
+		Terminal mult = new Terminal(2, "\\\\*", "*");
+		Terminal open = new Terminal(3, "\\\\(", "(");
+		Terminal close = new Terminal(4, "\\\\)", ")");
+		Terminal n = new Terminal(5, "n", "n");
+		Terminal eps = FirstFollowCounter.epsTerm;
 		// E
 		Rules r = new Rules();
 		List<GrammarUnit> list = new ArrayList<GrammarUnit>();
@@ -70,16 +70,16 @@ public class TestGrammar2 {
 		ParserGenerator gen = new ParserGenerator(map, E);
 		gen.printFirst();
 		gen.printFollow();
-		gen.writeFile("TG2");
-		String s = "n * (n + n) + n";
+		// gen.writeFile("TG2");
+		String s = "n * (n + n) + n * n";
 		Set<Character> delims = new TreeSet<Character>();
 		delims.add(' ');
 		delims.add('\t');
 		delims.add('\n');
-		// try {
-		// new TG2(s, delims).getTree();
-		// } catch (ParseException e) {
-		// e.printStackTrace();
-		// }
+		try {
+			new TG2(s, delims).getTree();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 }

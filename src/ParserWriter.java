@@ -78,7 +78,7 @@ public class ParserWriter {
 		out.println("	}");
 		out.println();
 		out.println("	public void nextChar() {");
-		out.println("		if (s.charAt(0) == (char) FirstFollowCounter.EOF) {");
+		out.println("		if (s.isEmpty()) {");
 		out.println("			return;");
 		out.println("		}");
 		out.println("		if (s.charAt(0) == '\\n') {");

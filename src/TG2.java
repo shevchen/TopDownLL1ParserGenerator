@@ -17,7 +17,7 @@ public class TG2 {
 	}
 
 	public void nextChar() {
-		if (s.charAt(0) == (char) FirstFollowCounter.EOF) {
+		if (s.isEmpty()) {
 			return;
 		}
 		if (s.charAt(0) == '\n') {
@@ -95,9 +95,9 @@ public class TG2 {
 			}
 		}
 		pattList.clear();
-		pattList.add(Pattern.compile("^￿"));
 		pattList.add(Pattern.compile("^\\+"));
 		pattList.add(Pattern.compile("^\\)"));
+		pattList.add(Pattern.compile("^￿"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
@@ -125,8 +125,8 @@ public class TG2 {
 			}
 		}
 		pattList.clear();
-		pattList.add(Pattern.compile("^￿"));
 		pattList.add(Pattern.compile("^\\)"));
+		pattList.add(Pattern.compile("^￿"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {

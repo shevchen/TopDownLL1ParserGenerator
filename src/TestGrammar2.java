@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,8 +79,11 @@ public class TestGrammar2 {
 		delims.add('\t');
 		delims.add('\n');
 		try {
-			new TG2(s, delims).getTree();
+			Node root = new TG2(s, delims).getTree();
+			root.printAsDot(new PrintWriter("tree.dot"));
 		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

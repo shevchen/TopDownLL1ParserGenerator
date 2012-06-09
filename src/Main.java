@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
+import util.Node;
+import util.NonTerminal;
+import util.ParseException;
+import util.ParserGenerator;
+import util.Rules;
+
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader("math.g"));
@@ -20,11 +26,11 @@ public class Main {
 			return;
 		}
 		grammarTree.printAsDot(new PrintWriter("grammar.dot"));
-		// Map<NonTerminal, Rules> rules = grammarTree.toRules();
-		// ParserGenerator gen = new ParserGenerator(rules,
-		// grammarTree.getFirst());
-		// gen.printFirst();
-		// gen.printFollow();
-		// gen.writeFile("Math");
+		Map<NonTerminal, Rules> rules = grammarTree.toRules();
+		NonTerminal first = grammarTree.getFirst();
+		ParserGenerator gen = new ParserGenerator(rules, first);
+		gen.printFirst();
+		gen.printFollow();
+		gen.writeFile("Gen_Math");
 	}
 }

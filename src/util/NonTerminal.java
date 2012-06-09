@@ -1,5 +1,7 @@
+package util;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class NonTerminal implements GrammarUnit, Comparable<NonTerminal> {
 	private String name;

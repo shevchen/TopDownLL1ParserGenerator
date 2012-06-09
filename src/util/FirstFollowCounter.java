@@ -1,3 +1,5 @@
+package util;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,9 +11,10 @@ public class FirstFollowCounter {
 	private NonTerminal start;
 	public Map<NonTerminal, Set<Terminal>> first, follow;
 
-	static final char EPS = 0, EOF = (char) -1;
-	static final Terminal epsTerm = new Terminal(EPS, "", "");
-	static final Terminal eofTerm = new Terminal(EOF, "" + (char) -1, "$");
+	public static final char EPS = 0, EOF = (char) -1;
+	public static final Terminal epsTerm = new Terminal(EPS, "", "");
+	public static final Terminal eofTerm = new Terminal(EOF, "" + (char) -1,
+			"$");
 
 	public FirstFollowCounter(Map<NonTerminal, Rules> rules, NonTerminal start) {
 		this.rules = rules;

@@ -1,3 +1,5 @@
+package util;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -58,11 +60,14 @@ public class ParserWriter {
 
 	public void writeFile(String className) throws FileNotFoundException {
 		PrintWriter out = new PrintWriter("src/" + className + ".java");
-		out.println("import java.util.regex.Matcher;");
-		out.println("import java.util.regex.Pattern;");
 		out.println("import java.util.ArrayList;");
 		out.println("import java.util.List;");
 		out.println("import java.util.Set;");
+		out.println("import java.util.regex.Matcher;");
+		out.println("import java.util.regex.Pattern;");
+		out.println();
+		out.println("import util.Node;");
+		out.println("import util.ParseException;");
 		out.println();
 		out.println("public class " + className + " {");
 		out.println("	private String s, initial;");

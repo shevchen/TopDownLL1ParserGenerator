@@ -1,3 +1,5 @@
+package util;
+
 public class ParseException extends Exception {
 	public ParseException(int lineNum, int charNum, String regex) {
 		super("Parse error: pattern [" + regex + "] not found at line "

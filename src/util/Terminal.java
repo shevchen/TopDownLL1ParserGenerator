@@ -1,3 +1,5 @@
+package util;
+
 public class Terminal implements GrammarUnit, Comparable<Terminal> {
 	private int id;
 	private String name, regex;

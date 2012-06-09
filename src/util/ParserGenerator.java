@@ -1,6 +1,9 @@
+package util;
+
 import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Set;
+
 
 public class ParserGenerator {
 	private FirstFollowCounter ffc;

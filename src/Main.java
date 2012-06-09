@@ -51,7 +51,7 @@ public class Main {
 			}
 			Node tree = null;
 			try {
-				tree = new Gen_Math(sb.toString(), GrammarParserGenerator
+				tree = new Gen_Pascal(sb.toString(), GrammarParserGenerator
 						.delims()).getTree();
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -63,29 +63,29 @@ public class Main {
 		}
 	}
 
-	private static void genParser(Node grammarTree) {
+	private static void genParser(Node grammarTree, String fileName) {
 		Map<NonTerminal, Rules> rules = grammarTree.toRules();
 		NonTerminal first = grammarTree.getFirst();
 		ParserGenerator gen = new ParserGenerator(rules, first);
 		gen.printFirst();
 		gen.printFollow();
-		gen.writeFile("Gen_Math");
+		gen.writeFile(fileName);
 	}
 
 	public static void main(String[] args) {
 		// genGrammarParser();
-		// Node grammarTree = getGrammarTree("math.g");
+		// Node grammarTree = getGrammarTree("pascal.g");
 		// try {
-		// grammarTree.printAsDot(new PrintWriter("math_grammar.dot"));
+		// grammarTree.printAsDot(new PrintWriter("pascal_grammar.dot"));
 		// } catch (FileNotFoundException e) {
 		// e.printStackTrace();
 		// }
-		// genParser(grammarTree);
-		Node tree = getTree("math.in");
-		try {
-			tree.printAsDot(new PrintWriter("math.dot"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		// genParser(grammarTree, "Gen_Pascal");
+		// Node tree = getTree("pascal.in");
+		// try {
+		// tree.printAsDot(new PrintWriter("pascal.dot"));
+		// } catch (FileNotFoundException e) {
+		// e.printStackTrace();
+		// }
 	}
 }

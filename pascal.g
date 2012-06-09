@@ -1,0 +1,12 @@
+-> S;
+S -> varW F semi E;
+E -> F semi E;
+E -> '';
+F -> var A colon var;
+A -> comma var A;
+A -> '';
+varW -> 'var';
+semi -> ';';
+colon -> ':';
+comma -> ',';
+var -> 'n';

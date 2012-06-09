@@ -9,4 +9,4 @@ varW -> 'var';
 semi -> ';';
 colon -> ':';
 comma -> ',';
-var -> 'n';
+var -> '\\w+';

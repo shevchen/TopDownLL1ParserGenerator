@@ -8,6 +8,6 @@ T2 -> mult F T2;
 T2 -> '';
 mult -> '\\*';
 F -> open E close;
-F -> 'n';
+F -> '\\d+';
 open -> '\\(';
 close -> '\\)';

@@ -209,6 +209,10 @@ public class Gen_GrammarParser {
 	public Node getTree() throws ParseException {
 		s = initial;
 		lineNum = charNum = 1;
-		return f_Start();
+		Node ans = f_Start();
+		if (s.charAt(0) != (char) -1) {
+			throw new ParseException(lineNum, charNum, s.charAt(0));
+		}
+		return ans;
 	}
 }

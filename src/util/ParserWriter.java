@@ -121,7 +121,12 @@ public class ParserWriter {
 		out.println("	public Node getTree() throws ParseException {");
 		out.println("		s = initial;");
 		out.println("		lineNum = charNum = 1;");
-		out.println("		return f_" + start + "();");
+		out.println("		Node ans = f_" + start + "();");
+		out.println("		if (s.charAt(0) != (char) -1) {");
+		out
+				.println("			throw new ParseException(lineNum, charNum, s.charAt(0));");
+		out.println("		}");
+		out.println("		return ans;");
 		out.println("	}");
 		out.println("}");
 		out.close();

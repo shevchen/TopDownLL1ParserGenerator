@@ -73,19 +73,26 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		// genGrammarParser();
-		// Node grammarTree = getGrammarTree("pascal.g");
-		// try {
-		// grammarTree.printAsDot(new PrintWriter("pascal_grammar.dot"));
-		// } catch (FileNotFoundException e) {
-		// e.printStackTrace();
-		// }
-		// genParser(grammarTree, "Gen_Pascal");
-		// Node tree = getTree("pascal.in");
-		// try {
-		// tree.printAsDot(new PrintWriter("pascal.dot"));
-		// } catch (FileNotFoundException e) {
-		// e.printStackTrace();
-		// }
+		genGrammarParser();
+		Node grammarTree = getGrammarTree("pascal.g");
+		if (grammarTree == null) {
+			return;
+		}
+		try {
+			grammarTree.printAsDot(new PrintWriter("pascal_grammar.dot"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		genParser(grammarTree, "Gen_Pascal");
+		final String file = "pascal";
+		Node tree = getTree(file + ".in");
+		if (tree == null) {
+			return;
+		}
+		try {
+			tree.printAsDot(new PrintWriter(file + ".dot"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -54,7 +54,7 @@ public class Gen_Math {
 		Node cur = new Node("E");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^n"));
+		pattList.add(Pattern.compile("^\\d+"));
 		pattList.add(Pattern.compile("^\\("));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
@@ -109,11 +109,11 @@ public class Gen_Math {
 			}
 		}
 		pattList.clear();
-		pattList.add(Pattern.compile("^n"));
+		pattList.add(Pattern.compile("^\\d+"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				cur.addChild(checkEquals("^n"));
+				cur.addChild(checkEquals("^\\d+"));
 				return cur;
 			}
 		}
@@ -124,7 +124,7 @@ public class Gen_Math {
 		Node cur = new Node("T");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^n"));
+		pattList.add(Pattern.compile("^\\d+"));
 		pattList.add(Pattern.compile("^\\("));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
@@ -228,6 +228,10 @@ public class Gen_Math {
 	public Node getTree() throws ParseException {
 		s = initial;
 		lineNum = charNum = 1;
-		return f_E();
+		Node ans = f_E();
+		if (s.charAt(0) != (char) -1) {
+			throw new ParseException(lineNum, charNum, s.charAt(0));
+		}
+		return ans;
 	}
 }

@@ -80,7 +80,7 @@ public class Gen_Pascal {
 		Node cur = new Node("E");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^n"));
+		pattList.add(Pattern.compile("^\\w+"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
@@ -106,7 +106,7 @@ public class Gen_Pascal {
 		Node cur = new Node("F");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^n"));
+		pattList.add(Pattern.compile("^\\w+"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
@@ -187,11 +187,11 @@ public class Gen_Pascal {
 		Node cur = new Node("var");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^n"));
+		pattList.add(Pattern.compile("^\\w+"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				cur.addChild(checkEquals("^n"));
+				cur.addChild(checkEquals("^\\w+"));
 				return cur;
 			}
 		}
@@ -216,6 +216,10 @@ public class Gen_Pascal {
 	public Node getTree() throws ParseException {
 		s = initial;
 		lineNum = charNum = 1;
-		return f_S();
+		Node ans = f_S();
+		if (s.charAt(0) != (char) -1) {
+			throw new ParseException(lineNum, charNum, s.charAt(0));
+		}
+		return ans;
 	}
 }

@@ -13,53 +13,12 @@ import util.ParserGenerator;
 import util.Rules;
 
 public class Main {
-	private static void genGrammarParser() {
+	private static void step1() {
+		// generates grammar file parser
 		try {
 			new GrammarParserGenerator().generate("Gen_GrammarParser");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-	}
-
-	private static Node getGrammarTree(String fileName) {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(fileName));
-			StringBuilder sb = new StringBuilder();
-			while (br.ready()) {
-				sb.append(br.readLine() + '\n');
-			}
-			Node grammarTree = null;
-			try {
-				grammarTree = new Gen_GrammarParser(sb.toString(),
-						GrammarParserGenerator.delims()).getTree();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			return grammarTree;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	private static Node getTree(String fileName) {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(fileName));
-			StringBuilder sb = new StringBuilder();
-			while (br.ready()) {
-				sb.append(br.readLine() + '\n');
-			}
-			Node tree = null;
-			try {
-				tree = new Gen_Pascal(sb.toString(), GrammarParserGenerator
-						.delims()).getTree();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			return tree;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
 		}
 	}
 
@@ -72,20 +31,52 @@ public class Main {
 		gen.writeFile(fileName);
 	}
 
-	public static void main(String[] args) {
-		genGrammarParser();
-		Node grammarTree = getGrammarTree("pascal.g");
-		if (grammarTree == null) {
-			return;
-		}
+	private static void step2() {
+		// generates grammar parser
 		try {
-			grammarTree.printAsDot(new PrintWriter("pascal_grammar.dot"));
-		} catch (FileNotFoundException e) {
+			BufferedReader br = new BufferedReader(new FileReader("pascal.g"));
+			StringBuilder sb = new StringBuilder();
+			while (br.ready()) {
+				sb.append(br.readLine() + '\n');
+			}
+			Node grammarTree = null;
+			try {
+				grammarTree = new Gen_GrammarParser(sb.toString(),
+						GrammarParserGenerator.delims()).getTree();
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return;
+			}
+			try {
+				grammarTree.printAsDot(new PrintWriter("pascal_grammar.dot"));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			genParser(grammarTree, "Gen_Pascal");
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		genParser(grammarTree, "Gen_Pascal");
+	}
+
+	private static void step3() {
+		// generates tree
 		final String file = "pascal";
-		Node tree = getTree(file + ".in");
+		Node tree = null;
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file + ".in"));
+			StringBuilder sb = new StringBuilder();
+			while (br.ready()) {
+				sb.append(br.readLine() + '\n');
+			}
+			try {
+				tree = new Gen_Pascal(sb.toString(), GrammarParserGenerator
+						.delims()).getTree();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		if (tree == null) {
 			return;
 		}
@@ -94,5 +85,9 @@ public class Main {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args) {
+		step3();
 	}
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-
 public class Node {
 	private String name;
 	private List<Node> children;
@@ -60,7 +59,8 @@ public class Node {
 		}
 		String uName = left.children.get(0).name;
 		if ("Term".equals(left.name)) {
-			if ("''".equals(uName)) {
+			uName = uName.substring(1, uName.length() - 1);
+			if (uName.isEmpty()) {
 				units.add(FirstFollowCounter.epsTerm);
 			} else {
 				units.add(new Terminal(termId++, uName, uName));

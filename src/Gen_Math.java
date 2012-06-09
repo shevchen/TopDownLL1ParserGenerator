@@ -54,8 +54,8 @@ public class Gen_Math {
 		Node cur = new Node("E");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^'n'"));
-		pattList.add(Pattern.compile("^'('"));
+		pattList.add(Pattern.compile("^n"));
+		pattList.add(Pattern.compile("^\\("));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
@@ -71,7 +71,7 @@ public class Gen_Math {
 		Node cur = new Node("E2");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^'+'"));
+		pattList.add(Pattern.compile("^\\+"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
@@ -82,7 +82,7 @@ public class Gen_Math {
 			}
 		}
 		pattList.clear();
-		pattList.add(Pattern.compile("^')'"));
+		pattList.add(Pattern.compile("^\\)"));
 		pattList.add(Pattern.compile("^￿"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
@@ -98,7 +98,7 @@ public class Gen_Math {
 		Node cur = new Node("F");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^'('"));
+		pattList.add(Pattern.compile("^\\("));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
@@ -109,11 +109,11 @@ public class Gen_Math {
 			}
 		}
 		pattList.clear();
-		pattList.add(Pattern.compile("^'n'"));
+		pattList.add(Pattern.compile("^n"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				cur.addChild(checkEquals("^'n'"));
+				cur.addChild(checkEquals("^n"));
 				return cur;
 			}
 		}
@@ -124,8 +124,8 @@ public class Gen_Math {
 		Node cur = new Node("T");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^'n'"));
-		pattList.add(Pattern.compile("^'('"));
+		pattList.add(Pattern.compile("^n"));
+		pattList.add(Pattern.compile("^\\("));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
@@ -141,7 +141,7 @@ public class Gen_Math {
 		Node cur = new Node("T2");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^'*'"));
+		pattList.add(Pattern.compile("^\\*"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
@@ -152,8 +152,8 @@ public class Gen_Math {
 			}
 		}
 		pattList.clear();
-		pattList.add(Pattern.compile("^'+'"));
-		pattList.add(Pattern.compile("^')'"));
+		pattList.add(Pattern.compile("^\\+"));
+		pattList.add(Pattern.compile("^\\)"));
 		pattList.add(Pattern.compile("^￿"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
@@ -169,11 +169,11 @@ public class Gen_Math {
 		Node cur = new Node("close");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^')'"));
+		pattList.add(Pattern.compile("^\\)"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				cur.addChild(checkEquals("^')'"));
+				cur.addChild(checkEquals("^\\)"));
 				return cur;
 			}
 		}
@@ -184,11 +184,11 @@ public class Gen_Math {
 		Node cur = new Node("mult");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^'*'"));
+		pattList.add(Pattern.compile("^\\*"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				cur.addChild(checkEquals("^'*'"));
+				cur.addChild(checkEquals("^\\*"));
 				return cur;
 			}
 		}
@@ -199,11 +199,11 @@ public class Gen_Math {
 		Node cur = new Node("open");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^'('"));
+		pattList.add(Pattern.compile("^\\("));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				cur.addChild(checkEquals("^'('"));
+				cur.addChild(checkEquals("^\\("));
 				return cur;
 			}
 		}
@@ -214,11 +214,11 @@ public class Gen_Math {
 		Node cur = new Node("plus");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^'+'"));
+		pattList.add(Pattern.compile("^\\+"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				cur.addChild(checkEquals("^'+'"));
+				cur.addChild(checkEquals("^\\+"));
 				return cur;
 			}
 		}

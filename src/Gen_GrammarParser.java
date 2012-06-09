@@ -1,19 +1,19 @@
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import util.Node;
 import util.ParseException;
 
-public class GrammarParser {
+public class Gen_GrammarParser {
 	private String s, initial;
 	private int lineNum, charNum;
 	private Set<Character> delims;
 	private List<Pattern> pattList;
 
-	public GrammarParser(String s, Set<Character> delims) {
+	public Gen_GrammarParser(String s, Set<Character> delims) {
 		this.initial = s + (char) -1;
 		this.delims = delims;
 		this.pattList = new ArrayList<Pattern>();

@@ -1,3 +1,5 @@
+package util;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,15 +8,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import util.FirstFollowCounter;
-import util.GrammarUnit;
-import util.NonTerminal;
-import util.ParserGenerator;
-import util.Rules;
-import util.Terminal;
-
 public class GrammarParserGenerator {
-	private static ParserGenerator grammarRulesParser() {
+	private ParserGenerator grammarRulesParser() {
 		// S -> A N ";" E
 		// E -> R ";" E | ""
 		// R -> N A O
@@ -117,10 +112,10 @@ public class GrammarParserGenerator {
 		return ans;
 	}
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public void generate(String fileName) throws FileNotFoundException {
 		ParserGenerator ruleParser = grammarRulesParser();
 		ruleParser.printFirst();
 		ruleParser.printFollow();
-		ruleParser.writeFile("GrammarParser");
+		ruleParser.writeFile(fileName);
 	}
 }

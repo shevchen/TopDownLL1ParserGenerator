@@ -2,12 +2,12 @@
 E -> T E2;
 E2 -> plus T E2;
 E2 -> '';
-plus -> '+';
+plus -> '\\+';
 T -> F T2;
 T2 -> mult F T2;
 T2 -> '';
-mult -> '*';
+mult -> '\\*';
 F -> open E close;
 F -> 'n';
-open -> '(';
-close -> ')';
+open -> '\\(';
+close -> '\\)';

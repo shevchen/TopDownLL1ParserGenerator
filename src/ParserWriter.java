@@ -41,8 +41,8 @@ public class ParserWriter {
 			for (GrammarUnit g : list) {
 				if (g instanceof Terminal) {
 					Terminal tg = (Terminal) g;
-					out.println("				assertEquals(\"" + tg.getRegex() + "\");");
-					out.println("				cur.addChild(new Node(\"" + g + "\"));");
+					out.println("				cur.addChild(checkEquals(\""
+							+ tg.getRegex() + "\"));");
 				} else {
 					out.println("				cur.addChild(f_" + g + "());");
 				}
@@ -97,14 +97,16 @@ public class ParserWriter {
 		out.println("	}");
 		out.println();
 		out
-				.println("	public void assertEquals(String regex) throws ParseException {");
+				.println("	public Node checkEquals(String regex) throws ParseException {");
 		out.println("		Matcher m = Pattern.compile(regex).matcher(s);");
 		out.println("		if (!m.find()) {");
 		out.println("			throw new ParseException(lineNum, charNum, regex);");
 		out.println("		}");
+		out.println("		Node ans = new Node(m.group());");
 		out.println("		for (int i = 0; i < m.end(); ++i) {");
 		out.println("			nextChar();");
 		out.println("		}");
+		out.println("		return ans;");
 		out.println("	}");
 		for (NonTerminal nt : rules.keySet()) {
 			out.println();

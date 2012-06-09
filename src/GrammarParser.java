@@ -35,14 +35,16 @@ public class GrammarParser {
 		}
 	}
 
-	public void assertEquals(String regex) throws ParseException {
+	public Node checkEquals(String regex) throws ParseException {
 		Matcher m = Pattern.compile(regex).matcher(s);
 		if (!m.find()) {
 			throw new ParseException(lineNum, charNum, regex);
 		}
+		Node ans = new Node(m.group());
 		for (int i = 0; i < m.end(); ++i) {
 			nextChar();
 		}
+		return ans;
 	}
 
 	private Node f_Arrow() throws ParseException {
@@ -53,8 +55,7 @@ public class GrammarParser {
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				assertEquals("^->");
-				cur.addChild(new Node("->"));
+				cur.addChild(checkEquals("^->"));
 				return cur;
 			}
 		}
@@ -65,14 +66,12 @@ public class GrammarParser {
 		Node cur = new Node("Expr");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^->"));
 		pattList.add(Pattern.compile("^\\w+"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
 				cur.addChild(f_Rule());
-				assertEquals("^;");
-				cur.addChild(new Node("semicolon"));
+				cur.addChild(checkEquals("^;"));
 				cur.addChild(f_Expr());
 				return cur;
 			}
@@ -82,8 +81,7 @@ public class GrammarParser {
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				assertEquals("^");
-				cur.addChild(new Node(""));
+				cur.addChild(checkEquals("^"));
 				return cur;
 			}
 		}
@@ -98,8 +96,7 @@ public class GrammarParser {
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				assertEquals("^\\w+");
-				cur.addChild(new Node("alphanum"));
+				cur.addChild(checkEquals("^\\w+"));
 				return cur;
 			}
 		}
@@ -124,8 +121,7 @@ public class GrammarParser {
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				assertEquals("^");
-				cur.addChild(new Node(""));
+				cur.addChild(checkEquals("^"));
 				return cur;
 			}
 		}
@@ -146,7 +142,7 @@ public class GrammarParser {
 			}
 		}
 		pattList.clear();
-		pattList.add(Pattern.compile("^\".*\""));
+		pattList.add(Pattern.compile("^\'.*\'"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
@@ -161,16 +157,6 @@ public class GrammarParser {
 		Node cur = new Node("Rule");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^->"));
-		for (Pattern p : pattList) {
-			Matcher m = p.matcher(s);
-			if (m.find()) {
-				cur.addChild(f_Arrow());
-				cur.addChild(f_Nonterm());
-				return cur;
-			}
-		}
-		pattList.clear();
 		pattList.add(Pattern.compile("^\\w+"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
@@ -184,16 +170,33 @@ public class GrammarParser {
 		throw new ParseException(lineNum, charNum, s.charAt(0));
 	}
 
+	private Node f_Start() throws ParseException {
+		Node cur = new Node("Start");
+		skipDelims();
+		pattList.clear();
+		pattList.add(Pattern.compile("^->"));
+		for (Pattern p : pattList) {
+			Matcher m = p.matcher(s);
+			if (m.find()) {
+				cur.addChild(f_Arrow());
+				cur.addChild(f_Nonterm());
+				cur.addChild(checkEquals("^;"));
+				cur.addChild(f_Expr());
+				return cur;
+			}
+		}
+		throw new ParseException(lineNum, charNum, s.charAt(0));
+	}
+
 	private Node f_Term() throws ParseException {
 		Node cur = new Node("Term");
 		skipDelims();
 		pattList.clear();
-		pattList.add(Pattern.compile("^\".*\""));
+		pattList.add(Pattern.compile("^\'.*\'"));
 		for (Pattern p : pattList) {
 			Matcher m = p.matcher(s);
 			if (m.find()) {
-				assertEquals("^\".*\"");
-				cur.addChild(new Node("terminal"));
+				cur.addChild(checkEquals("^\'.*\'"));
 				return cur;
 			}
 		}
@@ -203,6 +206,6 @@ public class GrammarParser {
 	public Node getTree() throws ParseException {
 		s = initial;
 		lineNum = charNum = 1;
-		return f_Expr();
+		return f_Start();
 	}
 }

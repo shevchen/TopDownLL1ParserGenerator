@@ -1,6 +1,7 @@
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Node {
 	private String name;
@@ -48,5 +49,13 @@ public class Node {
 		printDot(out, 0);
 		out.println("}");
 		out.close();
+	}
+
+	public Map<NonTerminal, Rules> toRules() {
+		return null;
+	}
+
+	public NonTerminal getFirst() {
+		return null;
 	}
 }

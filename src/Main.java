@@ -2,8 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
@@ -12,16 +11,20 @@ public class Main {
 		while (br.ready()) {
 			sb.append(br.readLine() + '\n');
 		}
-		Set<Character> delims = new TreeSet<Character>();
-		delims.add(' ');
-		delims.add('\n');
-		delims.add('\t');
+		Node grammarTree;
 		try {
-			Node grammarTree = new GrammarParser(sb.toString(), delims)
-					.getTree();
-			grammarTree.printAsDot(new PrintWriter("grammar.dot"));
+			grammarTree = new GrammarParser(sb.toString(),
+					GrammarParserGenerator.delims()).getTree();
 		} catch (ParseException e) {
 			e.printStackTrace();
+			return;
 		}
+		grammarTree.printAsDot(new PrintWriter("grammar.dot"));
+		// Map<NonTerminal, Rules> rules = grammarTree.toRules();
+		// ParserGenerator gen = new ParserGenerator(rules,
+		// grammarTree.getFirst());
+		// gen.printFirst();
+		// gen.printFollow();
+		// gen.writeFile("Math");
 	}
 }

@@ -13,4 +13,13 @@ public class Rule {
 		this.right = right;
 		this.synthCode = synthCode;
 	}
+
+	@Override
+	public String toString() {
+		String ans = left + " -> ";
+		for (Pair<GrammarUnit, String> p : right) {
+			ans += p.first;
+		}
+		return ans;
+	}
 }

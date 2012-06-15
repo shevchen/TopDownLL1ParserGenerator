@@ -59,18 +59,21 @@ public class FileScanner {
 			c = read();
 		}
 		String pos = getPosition();
-		while (c != -1 && !ignore.contains(c)) {
+		while (c != (char) -1 && !ignore.contains(c)) {
 			sb.append(c);
 			c = read();
 		}
 		return new ParsedString(sb.toString(), pos);
 	}
 
+	public static String quoted(String s) {
+		return '\'' + s + '\'';
+	}
+
 	public void assertEquals(String s) throws ParseException {
 		ParsedString next = nextToken();
 		if (!s.equals(next.str)) {
-			throw new ParseException(next.pos, '"' + s + '"',
-					'"' + next.str + '"');
+			throw new ParseException(next.pos, quoted(s), quoted(next.str));
 		}
 	}
 

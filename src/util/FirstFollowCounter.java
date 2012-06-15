@@ -1,10 +1,10 @@
 package util;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 
 public class FirstFollowCounter {
@@ -58,7 +58,7 @@ public class FirstFollowCounter {
 	}
 
 	private void countFirst() {
-		first = new HashMap<NonTerminal, Set<Character>>();
+		first = new TreeMap<NonTerminal, Set<Character>>();
 		for (NonTerminal nt : rules.keySet()) {
 			first.put(nt, new HashSet<Character>());
 		}
@@ -75,7 +75,7 @@ public class FirstFollowCounter {
 	}
 
 	private void countFollow() {
-		follow = new HashMap<NonTerminal, Set<Character>>();
+		follow = new TreeMap<NonTerminal, Set<Character>>();
 		for (NonTerminal nt : rules.keySet()) {
 			follow.put(nt, new HashSet<Character>());
 		}
@@ -115,8 +115,13 @@ public class FirstFollowCounter {
 					addAllFirst(testSet1, cur.get(i), 0);
 					testSet2.clear();
 					addAllFirst(testSet2, cur.get(j), 0);
+					String error = "Grammar is not LL(1)\nA: " + cur.get(i)
+							+ "\nB: " + cur.get(j) + "\n";
 					for (char c : testSet1) {
 						if (testSet2.contains(c)) {
+							System.err.println(error);
+							System.err.println("'" + c
+									+ "' is in FIRST of A and B");
 							return false;
 						}
 					}
@@ -124,6 +129,10 @@ public class FirstFollowCounter {
 					if (testSet1.contains(EPS)) {
 						for (char c : follow.get(e.getKey())) {
 							if (testSet2.contains(c)) {
+								System.err.println(error);
+								System.err.println("EPS is in FIRST of A; '"
+										+ c
+										+ "' is in FIRST of B and FOLLOW of A");
 								return false;
 							}
 						}
@@ -132,6 +141,10 @@ public class FirstFollowCounter {
 					if (testSet2.contains(EPS)) {
 						for (char c : follow.get(e.getKey())) {
 							if (testSet1.contains(c)) {
+								System.err.println(error);
+								System.err.println("EPS is in FIRST of B; '"
+										+ c
+										+ "' is in FIRST of A and FOLLOW of B");
 								return false;
 							}
 						}

@@ -16,16 +16,21 @@ public class Grammar {
 		this.header = header;
 		this.start = start;
 		nonTermDefs = new HashMap<NonTerminal, String>();
-		for (Pair<NonTerminal, String> p : ntDefs) {
-			nonTermDefs.put(p.first, p.second);
+		if (ntDefs != null) {
+			for (Pair<NonTerminal, String> p : ntDefs) {
+				nonTermDefs.put(p.first, p.second);
+			}
 		}
 		this.rules = new HashMap<NonTerminal, List<Rule>>();
-		for (Rule r : ruleList) {
-			List<Rule> list = this.rules.get(r.left);
-			if (list == null) {
-				list = new ArrayList<Rule>();
+		if (ruleList != null) {
+			for (Rule r : ruleList) {
+				List<Rule> list = this.rules.get(r.left);
+				if (list == null) {
+					list = new ArrayList<Rule>();
+				}
+				list.add(r);
+				this.rules.put(r.left, list);
 			}
-			list.add(r);
 		}
 	}
 }

@@ -36,4 +36,4 @@ MaybeDigits -> Digit MaybeDigits | Eps ;
 QuotedChar -> """ SingleChar """ | "'" SingleChar "'" ;
 
 Delims -> "_" QuotedChars | Eps ;
-QuotedChar -> QuotedChar QuotedChars | Eps ;
+QuotedChars -> QuotedChar QuotedChars | Eps ;

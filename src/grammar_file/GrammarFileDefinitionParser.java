@@ -22,7 +22,7 @@ public class GrammarFileDefinitionParser {
 	private static List<ParsedString> parseRight(FileScanner fs) {
 		List<ParsedString> right = new ArrayList<ParsedString>();
 		ParsedString cur = fs.nextToken();
-		while (!";".equals(cur)) {
+		while (!";".equals(cur.str)) {
 			right.add(cur);
 			cur = fs.nextToken();
 		}
@@ -41,6 +41,7 @@ public class GrammarFileDefinitionParser {
 		while (!left.str.isEmpty()) {
 			fs.assertEquals("->");
 			rules.add(new RuleString(left, parseRight(fs)));
+			left = fs.nextToken();
 		}
 		return new RawGrammar(rules, first);
 	}
@@ -48,7 +49,8 @@ public class GrammarFileDefinitionParser {
 	private static void assertEquals(String exp, ParsedString s)
 			throws ParseException {
 		if (!exp.equals(s.str)) {
-			throw new ParseException(s.pos, '"' + exp + '"', '"' + s.str + '"');
+			throw new ParseException(s.pos, FileScanner.quoted(exp),
+					FileScanner.quoted(s.str));
 		}
 	}
 
@@ -105,7 +107,10 @@ public class GrammarFileDefinitionParser {
 			List<Pair<GrammarUnit, String>> right = new ArrayList<Pair<GrammarUnit, String>>();
 			for (Iterator<ParsedString> it = r.right.iterator(); it.hasNext();) {
 				ParsedString s = it.next();
-				if ("[".equals(s.str)) {
+				if ("|".equals(s.str)) {
+					ruleList.add(new Rule(left, right, null));
+					right = new ArrayList<Pair<GrammarUnit, String>>();
+				} else if ("[".equals(s.str)) {
 					addRange(it, right);
 				} else if (s.str.charAt(0) == '"' || s.str.charAt(0) == '\'') {
 					char only = getChar(s);

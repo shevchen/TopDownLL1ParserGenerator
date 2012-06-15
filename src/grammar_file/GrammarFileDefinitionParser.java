@@ -14,6 +14,7 @@ import util.Pair;
 import util.ParseException;
 import util.ParsedString;
 import util.Rule;
+import util.StringUtils;
 import util.Terminal;
 
 public class GrammarFileDefinitionParser {
@@ -47,8 +48,8 @@ public class GrammarFileDefinitionParser {
 	private static void assertEquals(String exp, ParsedString s)
 			throws ParseException {
 		if (!exp.equals(s.str)) {
-			throw new ParseException(s.pos, FileScanner.quoted(exp),
-					FileScanner.quoted(s.str));
+			throw new ParseException(s.pos, StringUtils.quoted(exp),
+					StringUtils.quoted(s.str));
 		}
 	}
 

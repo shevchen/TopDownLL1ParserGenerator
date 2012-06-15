@@ -33,12 +33,12 @@ public class ParserWriter {
 							+ " || curChar > (char) " + (int) t.to + ") {");
 					out
 							.println("	throw new ParseException(fs.getPosition(), \"\" + curChar, \""
-									+ FileScanner.escape(t.toString()) + "\");");
+									+ StringUtils.escape(t.toString()) + "\");");
 					out.println("}");
 					out.println("C__Terminal arg_" + (i + 1)
 							+ " = new C__Terminal(\"\" + curChar);");
 					out
-							.println("cur.addChild(new Node(\"\" + FileScanner.bestView(curChar, false)));");
+							.println("cur.addChild(new Node(\"\" + StringUtils.bestView(curChar, false)));");
 					out.println("curChar = fs.nextChar();");
 				}
 			} else {
@@ -73,7 +73,7 @@ public class ParserWriter {
 				if (i > 0) {
 					sb.append(',');
 				}
-				sb.append(FileScanner.quoted(FileScanner.bestView(chars[i],
+				sb.append(StringUtils.quoted(StringUtils.bestView(chars[i],
 						true)));
 			}
 			sb.append('}');
@@ -106,6 +106,7 @@ public class ParserWriter {
 		out.println("import util.FileScanner;");
 		out.println("import util.Node;");
 		out.println("import util.ParseException;");
+		out.println("import util.StringUtils;");
 		out.println(g.header);
 		out.println();
 		out.println("public class " + className + " {");
@@ -127,7 +128,7 @@ public class ParserWriter {
 		out.println("		Node ans = f_" + g.start + "(stNonTerm);");
 		out.println("		if (curChar != (char) -1) {");
 		out
-				.println("			throw new ParseException(fs.getPosition(), \"eof\", FileScanner.quoted(\"\" + curChar));");
+				.println("			throw new ParseException(fs.getPosition(), \"eof\", StringUtils.quoted(\"\" + curChar));");
 		out.println("		}");
 		out.println("		return ans;");
 		out.println("	}");

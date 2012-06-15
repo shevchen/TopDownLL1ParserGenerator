@@ -10,7 +10,7 @@ public class Node {
 	private int id;
 
 	public Node(String name) {
-		this.name = FileScanner.escape(name);
+		this.name = StringUtils.escape(name);
 		this.children = new ArrayList<Node>();
 	}
 

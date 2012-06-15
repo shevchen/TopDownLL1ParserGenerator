@@ -17,9 +17,9 @@ public class Terminal implements GrammarUnit {
 			if (from == FirstFollowCounter.EPS) {
 				return "eps";
 			}
-			return FileScanner.bestView(from, false);
+			return StringUtils.bestView(from, false);
 		}
-		return FileScanner.bestView(from, false) + " — "
-				+ FileScanner.bestView(to, false);
+		return StringUtils.bestView(from, false) + " — "
+				+ StringUtils.bestView(to, false);
 	}
 }

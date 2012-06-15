@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import util.FileScanner;
 import util.Node;
 import util.ParseException;
+import util.StringUtils;
 
 public class GrammarFileParser {
 	private FileScanner fs;
@@ -26,7 +27,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_NonTerm arg_2 = new C_NonTerm();
 				cur.addChild(f_NonTerm(arg_2));
@@ -77,7 +78,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -96,7 +97,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_SingleChar arg_2 = new C_SingleChar();
 				cur.addChild(f_SingleChar(arg_2));
@@ -107,7 +108,7 @@ public class GrammarFileParser {
 				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -121,7 +122,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_SingleChar arg_2 = new C_SingleChar();
 				cur.addChild(f_SingleChar(arg_2));
@@ -132,7 +133,7 @@ public class GrammarFileParser {
 				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -200,7 +201,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_QuotedChars arg_2 = new C_QuotedChars();
 				cur.addChild(f_QuotedChars(arg_2));
@@ -296,7 +297,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -310,7 +311,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -328,7 +329,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -344,7 +345,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -358,7 +359,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_CharId arg_2 = new C_CharId();
 				cur.addChild(f_CharId(arg_2));
@@ -380,7 +381,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -417,7 +418,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_RangeBoundary arg_2 = new C_RangeBoundary();
 				cur.addChild(f_RangeBoundary(arg_2));
@@ -428,7 +429,7 @@ public class GrammarFileParser {
 				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_RangeBoundary arg_4 = new C_RangeBoundary();
 				cur.addChild(f_RangeBoundary(arg_4));
@@ -439,7 +440,7 @@ public class GrammarFileParser {
 				C__Terminal arg_5 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -459,7 +460,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_MaybeChar arg_2 = new C_MaybeChar();
 				cur.addChild(f_MaybeChar(arg_2));
@@ -470,7 +471,7 @@ public class GrammarFileParser {
 				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -484,7 +485,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_MaybeChar arg_2 = new C_MaybeChar();
 				cur.addChild(f_MaybeChar(arg_2));
@@ -495,7 +496,7 @@ public class GrammarFileParser {
 				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -568,7 +569,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -582,7 +583,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -645,7 +646,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				if (curChar < (char) 62 || curChar > (char) 62) {
 					throw new ParseException(fs.getPosition(), "" + curChar,
@@ -654,7 +655,7 @@ public class GrammarFileParser {
 				C__Terminal arg_2 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_NonTerm arg_3 = new C_NonTerm();
 				cur.addChild(f_NonTerm(arg_3));
@@ -665,7 +666,7 @@ public class GrammarFileParser {
 				C__Terminal arg_4 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -724,7 +725,7 @@ public class GrammarFileParser {
 				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_Code arg_4 = new C_Code();
 				cur.addChild(f_Code(arg_4));
@@ -752,7 +753,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -766,7 +767,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -780,7 +781,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -800,7 +801,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_RightSide arg_2 = new C_RightSide();
 				cur.addChild(f_RightSide(arg_2));
@@ -837,7 +838,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_Hex arg_2 = new C_Hex();
 				cur.addChild(f_Hex(arg_2));
@@ -870,7 +871,7 @@ public class GrammarFileParser {
 				C__Terminal arg_2 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				if (curChar < (char) 62 || curChar > (char) 62) {
 					throw new ParseException(fs.getPosition(), "" + curChar,
@@ -879,7 +880,7 @@ public class GrammarFileParser {
 				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_RightSide arg_4 = new C_RightSide();
 				cur.addChild(f_RightSide(arg_4));
@@ -892,7 +893,7 @@ public class GrammarFileParser {
 				C__Terminal arg_6 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_Rules arg_7 = new C_Rules();
 				cur.addChild(f_Rules(arg_7));
@@ -960,7 +961,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				C_MaybeCodeChars arg_2 = new C_MaybeCodeChars();
 				cur.addChild(f_MaybeCodeChars(arg_2));
@@ -971,7 +972,7 @@ public class GrammarFileParser {
 				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -990,7 +991,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1004,7 +1005,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1018,7 +1019,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1032,7 +1033,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1046,7 +1047,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1060,7 +1061,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1074,7 +1075,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1088,7 +1089,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1109,7 +1110,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1125,7 +1126,7 @@ public class GrammarFileParser {
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				cur
 						.addChild(new Node(""
-								+ FileScanner.bestView(curChar, false)));
+								+ StringUtils.bestView(curChar, false)));
 				curChar = fs.nextChar();
 				return cur;
 			}
@@ -1137,7 +1138,7 @@ public class GrammarFileParser {
 		C_File stNonTerm = new C_File();
 		Node ans = f_File(stNonTerm);
 		if (curChar != (char) -1) {
-			throw new ParseException(fs.getPosition(), "eof", FileScanner
+			throw new ParseException(fs.getPosition(), "eof", StringUtils
 					.quoted("" + curChar));
 		}
 		return ans;

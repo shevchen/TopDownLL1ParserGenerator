@@ -4,20 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Set;
 
 public class FileScanner {
 	private BufferedReader br;
-	private Set<Character> ignore;
 	private int line, chr;
 	private final int FIRST = 1;
 	private StringBuilder sb;
 
-	public FileScanner(String fileName, Set<Character> ignore)
-			throws FileNotFoundException {
+	public FileScanner(String fileName) throws FileNotFoundException {
 		br = new BufferedReader(new FileReader(fileName));
-		this.ignore = ignore;
-		this.ignore.remove((char) -1);
 		line = FIRST;
 		chr = FIRST;
 		sb = new StringBuilder();
@@ -48,18 +43,18 @@ public class FileScanner {
 		char c;
 		do {
 			c = read();
-		} while (ignore.contains(c));
+		} while (Character.isWhitespace(c));
 		return c;
 	}
 
 	public ParsedString nextToken() {
 		sb.setLength(0);
 		char c = read();
-		while (ignore.contains(c)) {
+		while (Character.isWhitespace(c)) {
 			c = read();
 		}
 		String pos = getPosition();
-		while (c != (char) -1 && !ignore.contains(c)) {
+		while (c != (char) -1 && !Character.isWhitespace(c)) {
 			sb.append(c);
 			c = read();
 		}
@@ -68,6 +63,16 @@ public class FileScanner {
 
 	public static String quoted(String s) {
 		return '\'' + s + '\'';
+	}
+
+	public static String bestView(char c) {
+		if (c < 32 || c > 126) {
+			return "'\\u" + String.format("%4x", (int) c) + '\'';
+		}
+		if (c == '\'' || c == '\\') {
+			return "'\\" + c + '\'';
+		}
+		return "'" + c + '\'';
 	}
 
 	public void assertEquals(String s) throws ParseException {

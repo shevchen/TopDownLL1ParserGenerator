@@ -13,7 +13,7 @@ public class Grammar {
 
 	public Grammar(String header, List<Pair<NonTerminal, String>> ntDefs,
 			NonTerminal start, List<Rule> ruleList) {
-		this.header = header;
+		this.header = header == null ? "" : header;
 		this.start = start;
 		nonTermDefs = new HashMap<NonTerminal, String>();
 		if (ntDefs != null) {

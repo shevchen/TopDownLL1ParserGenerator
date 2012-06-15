@@ -25,7 +25,7 @@ public class FirstFollowCounter {
 		isLL1 = checkLL1();
 	}
 
-	private boolean addAllFirst(Set<Character> to, Rule r, int index) {
+	public boolean addAllFirst(Set<Character> to, Rule r, int index) {
 		if (index == r.right.size()) {
 			return to.add(EPS);
 		}

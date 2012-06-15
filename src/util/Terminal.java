@@ -10,6 +10,9 @@ public class Terminal implements GrammarUnit {
 
 	@Override
 	public String toString() {
-		return (int) from + "-" + (int) to;
+		if (from == to) {
+			return FileScanner.bestView(from);
+		}
+		return FileScanner.bestView(from) + " — " + FileScanner.bestView(to);
 	}
 }

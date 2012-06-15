@@ -8,22 +8,30 @@ public class ParserGenerator {
 	private FirstFollowCounter ffc;
 	private ParserWriter pw;
 
-	public ParserGenerator(Map<NonTerminal, Rules> rules, NonTerminal start) {
-		ffc = new FirstFollowCounter(rules, start);
-		pw = new ParserWriter(rules, start, ffc);
+	public ParserGenerator(Grammar g) {
+		ffc = new FirstFollowCounter(g.start, g.rules);
+		pw = new ParserWriter(g, ffc);
 	}
 
-	private void print(Map<NonTerminal, Set<Terminal>> what) {
-		for (Map.Entry<NonTerminal, Set<Terminal>> e : what.entrySet()) {
+	private void print(Map<NonTerminal, Set<Character>> what) {
+		for (Map.Entry<NonTerminal, Set<Character>> e : what.entrySet()) {
 			System.out.print(e.getKey() + ": ");
 			boolean first = true;
-			for (Terminal t : e.getValue()) {
+			for (char c : e.getValue()) {
 				if (!first) {
 					System.out.print(", ");
 				} else {
 					first = false;
 				}
-				System.out.print("[" + t + "]");
+				if (c == FirstFollowCounter.EPS) {
+					System.out.print("EPS");
+				} else if (c == FirstFollowCounter.EOF) {
+					System.out.print("EOF");
+				} else if (c < 32) {
+					System.out.print((int) c);
+				} else {
+					System.out.print("'" + c + "'");
+				}
 			}
 			System.out.println();
 		}
@@ -39,6 +47,10 @@ public class ParserGenerator {
 		System.out.println("FOLLOW");
 		print(ffc.follow);
 		System.out.println();
+	}
+
+	public void printIsLL1() {
+		System.out.println("Grammar is " + (ffc.isLL1 ? "" : "not ") + "LL(1)");
 	}
 
 	public void writeFile(String name) {

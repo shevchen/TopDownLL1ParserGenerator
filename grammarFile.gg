@@ -2,13 +2,13 @@
 
 File -> Header NonTermDef Start Rules Delims ;
 
-Header -> Code ";" | Eps ;
-Code -> "#" MaybeCodeChars "#" ;
+Header -> Code | Eps ;
+Code -> "{" MaybeCodeChars "}" ;
 MaybeCodeChars -> CodeChar MaybeCodeChars | Eps ;
-CodeChar -> [ 0 - 34 ] | [ 36 - 127 ] ;
+CodeChar -> [ 33 - 122 ] | '|' | '~' ;
 Eps -> "" ;
 
-NonTermDef -> "$" NonTerm Code ";" NonTermDef | Eps ;
+NonTermDef -> "$" NonTerm Code NonTermDef | Eps ;
 NonTerm -> Alpha MaybeAlphanums ;
 Alpha -> [ "a" - "z" ] | [ "A" - "Z" ] ;
 MaybeAlphanums -> Alphanum MaybeAlphanums | Eps ;
@@ -17,15 +17,13 @@ Digit -> [ "0" - "9" ] ;
 
 Start -> "-" ">" NonTerm ";" ;
 
-Rules -> NonTerm "-" ">" Unit "," MaybeUnits MaybeSynthCode ";" Rules | Eps ;
-MaybeUnits -> Unit "|" MaybeUnits | Eps ;
-Unit -> Term | NonTerm MaybeInheritCode ;
-MaybeInheritCode -> Code | Eps ;
-MaybeSynthCode -> ":" Code | Eps ;
+Rules -> NonTerm "-" ">" Unit MaybeUnits ":" Code ";" Rules | Eps ;
+MaybeUnits -> Unit MaybeUnits | "|" Unit MaybeUnits | Eps ;
+Unit -> Term | NonTerm Code ;
 Term -> QuotedMaybeChar | CharRange ;
 QuotedMaybeChar -> """ MaybeChar """ | "'" MaybeChar "'" ;
 MaybeChar -> SingleChar | Eps ;
-SingleChar -> [ 0 - 33 ] | [ 35 - 38 ] | [ 40 - 91 ] | [ 93 - 127 ] | "\" CharId ;
+SingleChar -> [ 33 - 33 ] | [ 35 - 38 ] | [ 40 - 91 ] | [ 93 - 126 ] | "\" CharId ;
 CharId -> Escaped | "u" Hex Hex Hex Hex ;
 Escaped -> "b" | "t" | "n" | "f" | "r" | """ | "'" | "\" ;
 Hex -> Digit | [ "a" - "f" ] | [ "A" - "F" ] ;

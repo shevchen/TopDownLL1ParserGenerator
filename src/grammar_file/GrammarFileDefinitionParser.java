@@ -2,10 +2,8 @@ package grammar_file;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import util.FileScanner;
 import util.FirstFollowCounter;
@@ -93,11 +91,7 @@ public class GrammarFileDefinitionParser {
 
 	public static Grammar parseGrammarFileDefinition(String fileName)
 			throws FileNotFoundException, ParseException {
-		Set<Character> ignore = new HashSet<Character>();
-		ignore.add(' ');
-		ignore.add('\n');
-		ignore.add('\t');
-		RawGrammar raw = getRawGrammar(new FileScanner(fileName, ignore));
+		RawGrammar raw = getRawGrammar(new FileScanner(fileName));
 		String header = null;
 		List<Pair<NonTerminal, String>> ntDefs = null;
 		NonTerminal start = new NonTerminal(raw.start.str);

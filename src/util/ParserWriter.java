@@ -1,134 +1,115 @@
 package util;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class ParserWriter {
-	private Map<NonTerminal, Rules> rules;
-	private NonTerminal start;
+	private Grammar g;
 	private FirstFollowCounter ffc;
+	private Set<Character> temp;
+	private StringBuilder sb;
 
-	private Set<Terminal> terms;
-
-	public ParserWriter(Map<NonTerminal, Rules> rules, NonTerminal start,
-			FirstFollowCounter ffc) {
-		this.rules = rules;
-		this.start = start;
+	public ParserWriter(Grammar g, FirstFollowCounter ffc) {
+		this.g = g;
 		this.ffc = ffc;
-		this.terms = new TreeSet<Terminal>();
+		temp = new HashSet<Character>();
+		sb = new StringBuilder();
+	}
+
+	private void processRule(PrintWriter out, Rule r) {
+		for (Pair<GrammarUnit, String> p : r.right) {
+			if (p.first instanceof Terminal) {
+				out.println("cur.addChild(new Node(\""
+						+ ((Terminal) p.first).toString().replaceAll("\"",
+								"\\\\\"") + "\"));");
+			} else {
+
+			}
+		}
 	}
 
 	private void writeMethod(PrintWriter out, NonTerminal nt) {
-		out.println("	private Node f_" + nt + "() throws ParseException {");
+		out.println("	private Node f_" + nt + "(C_" + nt
+				+ " arg_0) throws ParseException {");
 		out.println("		Node cur = new Node(\"" + nt + "\");");
-		out.println("		skipDelims();");
-		for (List<GrammarUnit> list : rules.get(nt)) {
-			terms.clear();
-			ffc.addAllFirst(terms, list, 0);
-			if (terms.remove(FirstFollowCounter.epsTerm)) {
-				terms.addAll(ffc.follow.get(nt));
+		for (Rule r : g.rules.get(nt)) {
+			temp.clear();
+			ffc.addAllFirst(temp, r, 0);
+			if (temp.remove(FirstFollowCounter.EPS)) {
+				temp.addAll(ffc.follow.get(nt));
 			}
-			out.println("		pattList.clear();");
-			for (Terminal t : terms) {
-				out.println("		pattList.add(Pattern.compile(\"" + t.getRegex()
-						+ "\"));");
-			}
-			out.println("		for (Pattern p : pattList) {");
-			out.println("			Matcher m = p.matcher(s);");
-			out.println("			if (m.find()) {");
-			for (GrammarUnit g : list) {
-				if (g instanceof Terminal) {
-					Terminal tg = (Terminal) g;
-					out.println("				cur.addChild(checkEquals(\""
-							+ tg.getRegex() + "\"));");
-				} else {
-					out.println("				cur.addChild(f_" + g + "());");
+			Character[] chars = temp.toArray(new Character[temp.size()]);
+			sb.setLength(0);
+			sb.append('{');
+			for (int i = 0; i < chars.length; ++i) {
+				if (i > 0) {
+					sb.append(',');
 				}
+				sb.append(FileScanner.bestView(chars[i]));
 			}
+			sb.append('}');
+			out.println("		for (char c : new char[]" + sb.toString() + ") {");
+			out.println("			if (c == curChar) {");
+			processRule(out, r);
 			out.println("				return cur;");
 			out.println("			}");
 			out.println("		}");
 		}
-		out
-				.println("		throw new ParseException(lineNum, charNum, s.charAt(0));");
+		out.println("		throw new ParseException(fs.getPosition(), curChar);");
 		out.println("	}");
 	}
 
+	private void writeClass(PrintWriter out, NonTerminal nt) {
+		out.println("class C_" + nt + " {");
+		if (g.nonTermDefs.containsKey(nt)) {
+			out.println(g.nonTermDefs.get(nt));
+		}
+		out.println("}");
+	}
+
 	public void writeFile(String className) throws FileNotFoundException {
-		PrintWriter out = new PrintWriter("src/" + className + ".java");
-		out.println("import java.util.ArrayList;");
-		out.println("import java.util.List;");
-		out.println("import java.util.Set;");
-		out.println("import java.util.regex.Matcher;");
-		out.println("import java.util.regex.Pattern;");
+		new File("src/gen").mkdirs();
+		PrintWriter out = new PrintWriter("src/gen/" + className + ".java");
+		out.println("package gen;");
 		out.println();
+		out.println("import java.io.FileNotFoundException;");
+		out.println();
+		out.println("import util.FileScanner;");
 		out.println("import util.Node;");
 		out.println("import util.ParseException;");
+		out.println(g.header);
 		out.println();
 		out.println("public class " + className + " {");
-		out.println("	private String s, initial;");
-		out.println("	private int lineNum, charNum;");
-		out.println("	private Set<Character> delims;");
-		out.println("	private List<Pattern> pattList;");
+		out.println("	private FileScanner fs;");
+		out.println("	private char curChar;");
 		out.println();
 		out.println("	public " + className
-				+ "(String s, Set<Character> delims) {");
-		out.println("		this.initial = s + (char) -1;");
-		out.println("		this.delims = delims;");
-		out.println("		this.pattList = new ArrayList<Pattern>();");
+				+ "(String fileName) throws FileNotFoundException {");
+		out.println("		this.fs = new FileScanner(fileName);");
+		out.println("		curChar = fs.nextChar();");
 		out.println("	}");
-		out.println();
-		out.println("	public void nextChar() {");
-		out.println("		if (s.isEmpty()) {");
-		out.println("			return;");
-		out.println("		}");
-		out.println("		if (s.charAt(0) == '\\n') {");
-		out.println("			lineNum++;");
-		out.println("			charNum = 1;");
-		out.println("		} else {");
-		out.println("			charNum++;");
-		out.println("		}");
-		out.println("		s = s.substring(1);");
-		out.println("	}");
-		out.println();
-		out.println("	public void skipDelims() {");
-		out.println("		while (delims.contains(s.charAt(0))) {");
-		out.println("			nextChar();");
-		out.println("		}");
-		out.println("	}");
-		out.println();
-		out
-				.println("	public Node checkEquals(String regex) throws ParseException {");
-		out.println("		Matcher m = Pattern.compile(regex).matcher(s);");
-		out.println("		if (!m.find()) {");
-		out.println("			throw new ParseException(lineNum, charNum, regex);");
-		out.println("		}");
-		out.println("		Node ans = new Node(m.group());");
-		out.println("		for (int i = 0; i < m.end(); ++i) {");
-		out.println("			nextChar();");
-		out.println("		}");
-		out.println("		return ans;");
-		out.println("	}");
-		for (NonTerminal nt : rules.keySet()) {
+		for (NonTerminal nt : g.rules.keySet()) {
 			out.println();
 			writeMethod(out, nt);
 		}
 		out.println();
 		out.println("	public Node getTree() throws ParseException {");
-		out.println("		s = initial;");
-		out.println("		lineNum = charNum = 1;");
-		out.println("		Node ans = f_" + start + "();");
-		out.println("		if (s.charAt(0) != (char) -1) {");
+		out.println("		C_" + g.start + " stNonTerm = new C_" + g.start + "();");
+		out.println("		Node ans = f_" + g.start + "(stNonTerm);");
+		out.println("		if (curChar != (char) -1) {");
 		out
-				.println("			throw new ParseException(lineNum, charNum, s.charAt(0));");
+				.println("			throw new ParseException(fs.getPosition(), \"EOF\", FileScanner.quoted(\"\" + curChar));");
 		out.println("		}");
 		out.println("		return ans;");
 		out.println("	}");
 		out.println("}");
+		for (NonTerminal nt : g.rules.keySet()) {
+			out.println();
+			writeClass(out, nt);
+		}
 		out.close();
 	}
 }

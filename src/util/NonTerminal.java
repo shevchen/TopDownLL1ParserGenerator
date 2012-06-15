@@ -1,7 +1,7 @@
 package util;
 
 public class NonTerminal implements GrammarUnit, Comparable<NonTerminal> {
-	private String name;
+	public String name;
 
 	public NonTerminal(String name) {
 		this.name = name;

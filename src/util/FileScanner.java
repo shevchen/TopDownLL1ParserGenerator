@@ -65,14 +65,18 @@ public class FileScanner {
 		return '\'' + s + '\'';
 	}
 
-	public static String bestView(char c) {
+	private static String bestViewInside(char c, boolean needEscape) {
 		if (c < 32 || c > 126) {
-			return "'\\u" + String.format("%4x", (int) c) + '\'';
+			return "\\u" + String.format("%4x", (int) c);
 		}
-		if (c == '\'' || c == '\\') {
-			return "'\\" + c + '\'';
+		if (needEscape && (c == '\'' || c == '\\')) {
+			return "\\" + c;
 		}
-		return "'" + c + '\'';
+		return "" + c;
+	}
+
+	public static String bestView(char c, boolean needEscape) {
+		return '\'' + bestViewInside(c, needEscape) + '\'';
 	}
 
 	public void assertEquals(String s) throws ParseException {

@@ -20,14 +20,28 @@ public class ParserWriter {
 	}
 
 	private void processRule(PrintWriter out, Rule r) {
-		for (Pair<GrammarUnit, String> p : r.right) {
+		for (int i = 0; i < r.right.size(); ++i) {
+			Pair<GrammarUnit, String> p = r.right.get(i);
 			if (p.first instanceof Terminal) {
+				Terminal t = (Terminal) p.first;
 				out.println("cur.addChild(new Node(\""
-						+ ((Terminal) p.first).toString().replaceAll("\"",
-								"\\\\\"") + "\"));");
+						+ t.toString().replaceAll("\"", "\\\\\"") + "\"));");
+				if (t.from != FirstFollowCounter.EOF
+						&& t.from != FirstFollowCounter.EPS) {
+					out.println("curChar = fs.nextChar();");
+				}
 			} else {
-
+				NonTerminal nt = (NonTerminal) p.first;
+				out.println("C_" + nt + " arg_" + (i + 1) + " = new C_" + nt
+						+ "();");
+				if (p.second != null) {
+					out.println(p.second.replaceAll("$", "arg_"));
+				}
+				out.println("cur.addChild(f_" + nt + "(arg_" + (i + 1) + "));");
 			}
+		}
+		if (r.synthCode != null) {
+			out.println(r.synthCode.replaceAll("$", "arg_"));
 		}
 	}
 
@@ -48,7 +62,7 @@ public class ParserWriter {
 				if (i > 0) {
 					sb.append(',');
 				}
-				sb.append(FileScanner.bestView(chars[i]));
+				sb.append(FileScanner.bestView(chars[i], true));
 			}
 			sb.append('}');
 			out.println("		for (char c : new char[]" + sb.toString() + ") {");

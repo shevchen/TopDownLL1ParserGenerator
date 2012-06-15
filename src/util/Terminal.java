@@ -11,8 +11,15 @@ public class Terminal implements GrammarUnit {
 	@Override
 	public String toString() {
 		if (from == to) {
-			return FileScanner.bestView(from);
+			if (from == FirstFollowCounter.EOF) {
+				return "eof";
+			}
+			if (from == FirstFollowCounter.EPS) {
+				return "eps";
+			}
+			return FileScanner.bestView(from, false);
 		}
-		return FileScanner.bestView(from) + " — " + FileScanner.bestView(to);
+		return FileScanner.bestView(from, false) + " — "
+				+ FileScanner.bestView(to, false);
 	}
 }

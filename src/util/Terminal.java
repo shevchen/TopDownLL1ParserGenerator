@@ -1,30 +1,15 @@
 package util;
 
-public class Terminal implements GrammarUnit, Comparable<Terminal> {
-	private int id;
-	private String name, regex;
+public class Terminal implements GrammarUnit {
+	public char from, to;
 
-	public Terminal(int id, String regex, String name) {
-		this.id = id;
-		this.name = name;
-		this.regex = (regex == null) ? null : ("^" + regex);
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public String getRegex() {
-		return regex;
+	public Terminal(char from, char to) {
+		this.from = from;
+		this.to = to;
 	}
 
 	@Override
 	public String toString() {
-		return name;
-	}
-
-	@Override
-	public int compareTo(Terminal o) {
-		return id - o.id;
+		return (int) from + "-" + (int) to;
 	}
 }

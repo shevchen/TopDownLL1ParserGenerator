@@ -1,45 +1,54 @@
 package util;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.Map.Entry;
 
 public class FirstFollowCounter {
-	private Map<NonTerminal, Rules> rules;
 	private NonTerminal start;
-	public Map<NonTerminal, Set<Terminal>> first, follow;
+	private Map<NonTerminal, List<Rule>> rules;
+	public Map<NonTerminal, Set<Character>> first, follow;
+	public boolean isLL1;
 
-	public static final char EPS = 0, EOF = (char) -1;
-	public static final Terminal epsTerm = new Terminal(EPS, "", "");
-	public static final Terminal eofTerm = new Terminal(EOF, "" + (char) -1,
-			"$");
+	public static final char EPS = (char) -2;
+	public static final char EOF = (char) -1;
 
-	public FirstFollowCounter(Map<NonTerminal, Rules> rules, NonTerminal start) {
-		this.rules = rules;
+	public FirstFollowCounter(NonTerminal start,
+			Map<NonTerminal, List<Rule>> rules) {
 		this.start = start;
+		this.rules = rules;
 		countFirst();
 		countFollow();
+		isLL1 = checkLL1();
 	}
 
-	boolean addAllFirst(Set<Terminal> to, List<GrammarUnit> from, int index) {
-		if (index == from.size()) {
-			return to.add(epsTerm);
+	private boolean addAllFirst(Set<Character> to, Rule r, int index) {
+		if (index == r.right.size()) {
+			return to.add(EPS);
 		}
-		GrammarUnit g = from.get(index);
+		GrammarUnit g = r.right.get(index).first;
 		if (g instanceof Terminal) {
 			Terminal tg = (Terminal) g;
-			if (tg.getId() == EPS) {
-				return addAllFirst(to, from, index + 1);
+			if (tg.from == EPS) {
+				if (tg.to != EPS) {
+					throw new RuntimeException();
+				}
+				return addAllFirst(to, r, index + 1);
 			} else {
-				return to.add(tg);
+				boolean ans = false;
+				for (char c = tg.from; c <= tg.to && c < EPS && c < EOF; ++c) {
+					ans |= to.add(c);
+				}
+				return ans;
 			}
 		} else {
 			boolean ans = false;
-			for (Terminal c : first.get((NonTerminal) g)) {
-				if (c.getId() == 0) {
-					ans |= addAllFirst(to, from, index + 1);
+			for (Character c : first.get((NonTerminal) g)) {
+				if (c == EPS) {
+					ans |= addAllFirst(to, r, index + 1);
 				} else {
 					ans |= to.add(c);
 				}
@@ -49,41 +58,42 @@ public class FirstFollowCounter {
 	}
 
 	private void countFirst() {
-		first = new TreeMap<NonTerminal, Set<Terminal>>();
+		first = new HashMap<NonTerminal, Set<Character>>();
 		for (NonTerminal nt : rules.keySet()) {
-			first.put(nt, new TreeSet<Terminal>());
+			first.put(nt, new HashSet<Character>());
 		}
 		boolean action = true;
 		while (action) {
 			action = false;
-			for (Map.Entry<NonTerminal, Rules> e : rules.entrySet()) {
-				Set<Terminal> to = first.get(e.getKey());
-				for (List<GrammarUnit> list : e.getValue()) {
-					action |= addAllFirst(to, list, 0);
+			for (Map.Entry<NonTerminal, List<Rule>> e : rules.entrySet()) {
+				Set<Character> to = first.get(e.getKey());
+				for (Rule r : e.getValue()) {
+					action |= addAllFirst(to, r, 0);
 				}
 			}
 		}
 	}
 
 	private void countFollow() {
-		follow = new TreeMap<NonTerminal, Set<Terminal>>();
+		follow = new HashMap<NonTerminal, Set<Character>>();
 		for (NonTerminal nt : rules.keySet()) {
-			follow.put(nt, new TreeSet<Terminal>());
+			follow.put(nt, new HashSet<Character>());
 		}
-		follow.get(start).add(eofTerm);
+		follow.get(start).add(EOF);
 		boolean action = true;
 		while (action) {
 			action = false;
-			for (Map.Entry<NonTerminal, Rules> e : rules.entrySet()) {
-				Set<Terminal> leftFollow = follow.get(e.getKey());
-				for (List<GrammarUnit> list : e.getValue()) {
-					for (int i = 0; i < list.size(); ++i) {
-						if (list.get(i) instanceof NonTerminal) {
-							Set<Terminal> rightFollow = follow
-									.get((NonTerminal) list.get(i));
+			for (Map.Entry<NonTerminal, List<Rule>> e : rules.entrySet()) {
+				Set<Character> leftFollow = follow.get(e.getKey());
+				for (Rule r : e.getValue()) {
+					for (int i = 0; i < r.right.size(); ++i) {
+						GrammarUnit g = r.right.get(i).first;
+						if (g instanceof NonTerminal) {
+							Set<Character> rightFollow = follow
+									.get((NonTerminal) g);
 							int prevSize = rightFollow.size();
-							addAllFirst(rightFollow, list, i + 1);
-							if (rightFollow.remove(epsTerm)) {
+							addAllFirst(rightFollow, r, i + 1);
+							if (rightFollow.remove(EPS)) {
 								rightFollow.addAll(leftFollow);
 							}
 							action |= rightFollow.size() > prevSize;
@@ -92,5 +102,43 @@ public class FirstFollowCounter {
 				}
 			}
 		}
+	}
+
+	private boolean checkLL1() {
+		Set<Character> testSet1 = new HashSet<Character>(), testSet2 = new HashSet<Character>();
+		for (Entry<NonTerminal, List<Rule>> e : rules.entrySet()) {
+			List<Rule> cur = e.getValue();
+			for (int i = 0; i < cur.size(); ++i) {
+				for (int j = i + 1; j < cur.size(); ++j) {
+					// 1
+					testSet1.clear();
+					addAllFirst(testSet1, cur.get(i), 0);
+					testSet2.clear();
+					addAllFirst(testSet2, cur.get(j), 0);
+					for (char c : testSet1) {
+						if (testSet2.contains(c)) {
+							return false;
+						}
+					}
+					// 2
+					if (testSet1.contains(EPS)) {
+						for (char c : follow.get(e.getKey())) {
+							if (testSet2.contains(c)) {
+								return false;
+							}
+						}
+					}
+					// 3
+					if (testSet2.contains(EPS)) {
+						for (char c : follow.get(e.getKey())) {
+							if (testSet1.contains(c)) {
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 }

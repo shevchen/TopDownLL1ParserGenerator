@@ -1,9 +1,11 @@
+import gen.GrammarFileParser;
 import grammar_file.GrammarFileDefinitionParser;
 import util.Grammar;
+import util.Node;
 import util.ParserGenerator;
 
 public class Main {
-	public static void main(String[] args) {
+	static void genFileParser() {
 		Grammar g;
 		try {
 			g = GrammarFileDefinitionParser
@@ -16,6 +18,20 @@ public class Main {
 		// pg.printFirst();
 		// pg.printFollow();
 		// pg.printIsLL1();
-		pg.writeFile("Test");
+		pg.writeFile("GrammarFileParser");
+	}
+
+	static Node parseFile() {
+		try {
+			return new GrammarFileParser("math.g").getTree();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static void main(String[] args) {
+		genFileParser();
+		// parseFile();
 	}
 }

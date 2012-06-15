@@ -6,11 +6,11 @@ import util.FileScanner;
 import util.Node;
 import util.ParseException;
 
-public class Test {
+public class GrammarFileParser {
 	private FileScanner fs;
 	private char curChar;
 
-	public Test(String fileName) throws FileNotFoundException {
+	public GrammarFileParser(String fileName) throws FileNotFoundException {
 		this.fs = new FileScanner(fileName);
 		curChar = fs.nextChar();
 	}
@@ -38,8 +38,13 @@ public class Test {
 		for (char c : new char[] { '3', '2', '1', '0', '7', '6', '5', '4', '9',
 				'8' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'0' — '9'"));
+				if (curChar < (char) 48 || curChar > (char) 57) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'0' — '9'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'0' — '9'"));
 				return cur;
 			}
 		}
@@ -57,22 +62,37 @@ public class Test {
 				'c', '`', 'a', 'n', 'o', 'l', 'm', 'j', 'k', 'h', 'i', 'w',
 				'v', 'u', 't', 's', 'r', 'q', 'p', 'z', 'y', 'x' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'!' — 'z'"));
+				if (curChar < (char) 33 || curChar > (char) 122) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'!' — 'z'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'!' — 'z'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { '|' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'|'"));
+				if (curChar < (char) 124 || curChar > (char) 124) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'|'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'|'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { '~' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'~'"));
+				if (curChar < (char) 126 || curChar > (char) 126) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'~'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'~'"));
 				return cur;
 			}
 		}
@@ -83,57 +103,97 @@ public class Test {
 		Node cur = new Node("Escaped");
 		for (char c : new char[] { 'b' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'b'"));
+				if (curChar < (char) 98 || curChar > (char) 98) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'b'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'b'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { 't' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'t'"));
+				if (curChar < (char) 116 || curChar > (char) 116) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'t'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'t'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { 'n' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'n'"));
+				if (curChar < (char) 110 || curChar > (char) 110) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'n'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'n'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { 'f' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'f'"));
+				if (curChar < (char) 102 || curChar > (char) 102) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'f'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'f'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { 'r' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'r'"));
+				if (curChar < (char) 114 || curChar > (char) 114) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'r'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'r'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { '"' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'\"'"));
+				if (curChar < (char) 34 || curChar > (char) 34) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'\"'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'\"'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { '\'' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'''"));
+				if (curChar < (char) 39 || curChar > (char) 39) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'''");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'''"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { '\\' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'\'"));
+				if (curChar < (char) 92 || curChar > (char) 92) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'\'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'\'"));
 				return cur;
 			}
 		}
@@ -144,23 +204,43 @@ public class Test {
 		Node cur = new Node("QuotedChar");
 		for (char c : new char[] { '"' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'\"'"));
+				if (curChar < (char) 34 || curChar > (char) 34) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'\"'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'\"'"));
 				C_SingleChar arg_2 = new C_SingleChar();
 				cur.addChild(f_SingleChar(arg_2));
-				cur.addChild(new Node("'\"'"));
+				if (curChar < (char) 34 || curChar > (char) 34) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'\"'");
+				}
+				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'\"'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { '\'' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'''"));
+				if (curChar < (char) 39 || curChar > (char) 39) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'''");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'''"));
 				C_SingleChar arg_2 = new C_SingleChar();
 				cur.addChild(f_SingleChar(arg_2));
-				cur.addChild(new Node("'''"));
+				if (curChar < (char) 39 || curChar > (char) 39) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'''");
+				}
+				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'''"));
 				return cur;
 			}
 		}
@@ -200,15 +280,25 @@ public class Test {
 		}
 		for (char c : new char[] { 'f', 'd', 'e', 'b', 'c', 'a' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'a' — 'f'"));
+				if (curChar < (char) 97 || curChar > (char) 102) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'a' — 'f'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'a' — 'f'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { 'D', 'E', 'F', 'A', 'B', 'C' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'A' — 'F'"));
+				if (curChar < (char) 65 || curChar > (char) 70) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'A' — 'F'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'A' — 'F'"));
 				return cur;
 			}
 		}
@@ -219,14 +309,29 @@ public class Test {
 		Node cur = new Node("Start");
 		for (char c : new char[] { '-' }) {
 			if (c == curChar) {
+				if (curChar < (char) 45 || curChar > (char) 45) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'-'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
+				curChar = fs.nextChar();
 				cur.addChild(new Node("'-'"));
+				if (curChar < (char) 62 || curChar > (char) 62) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'>'");
+				}
+				C__Terminal arg_2 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
 				cur.addChild(new Node("'>'"));
-				curChar = fs.nextChar();
 				C_NonTerm arg_3 = new C_NonTerm();
 				cur.addChild(f_NonTerm(arg_3));
-				cur.addChild(new Node("';'"));
+				if (curChar < (char) 59 || curChar > (char) 59) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"';'");
+				}
+				C__Terminal arg_4 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("';'"));
 				return cur;
 			}
 		}
@@ -239,8 +344,13 @@ public class Test {
 				'l', 'm', 'j', 'k', 'h', 'i', 'w', 'v', 'u', 't', 's', 'r',
 				'q', 'p', 'z', 'y', 'x' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'a' — 'z'"));
+				if (curChar < (char) 97 || curChar > (char) 122) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'a' — 'z'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'a' — 'z'"));
 				return cur;
 			}
 		}
@@ -248,8 +358,13 @@ public class Test {
 				'N', 'O', 'H', 'I', 'J', 'K', 'U', 'T', 'W', 'V', 'Q', 'P',
 				'S', 'R', 'Y', 'X', 'Z' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'A' — 'Z'"));
+				if (curChar < (char) 65 || curChar > (char) 90) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'A' — 'Z'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'A' — 'Z'"));
 				return cur;
 			}
 		}
@@ -289,8 +404,13 @@ public class Test {
 		}
 		for (char c : new char[] { 'u' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'u'"));
+				if (curChar < (char) 117 || curChar > (char) 117) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'u'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'u'"));
 				C_Hex arg_2 = new C_Hex();
 				cur.addChild(f_Hex(arg_2));
 				C_Hex arg_3 = new C_Hex();
@@ -343,8 +463,13 @@ public class Test {
 		}
 		for (char c : new char[] { '_' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'_'"));
+				if (curChar < (char) 95 || curChar > (char) 95) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'_'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'_'"));
 				return cur;
 			}
 		}
@@ -374,12 +499,22 @@ public class Test {
 		Node cur = new Node("Code");
 		for (char c : new char[] { '{' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'{'"));
+				if (curChar < (char) 123 || curChar > (char) 123) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'{'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'{'"));
 				C_MaybeCodeChars arg_2 = new C_MaybeCodeChars();
 				cur.addChild(f_MaybeCodeChars(arg_2));
-				cur.addChild(new Node("'}'"));
+				if (curChar < (char) 125 || curChar > (char) 125) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'}'");
+				}
+				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'}'"));
 				return cur;
 			}
 		}
@@ -391,23 +526,43 @@ public class Test {
 		Node cur = new Node("QuotedMaybeChar");
 		for (char c : new char[] { '"' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'\"'"));
+				if (curChar < (char) 34 || curChar > (char) 34) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'\"'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'\"'"));
 				C_MaybeChar arg_2 = new C_MaybeChar();
 				cur.addChild(f_MaybeChar(arg_2));
-				cur.addChild(new Node("'\"'"));
+				if (curChar < (char) 34 || curChar > (char) 34) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'\"'");
+				}
+				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'\"'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { '\'' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'''"));
+				if (curChar < (char) 39 || curChar > (char) 39) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'''");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'''"));
 				C_MaybeChar arg_2 = new C_MaybeChar();
 				cur.addChild(f_MaybeChar(arg_2));
-				cur.addChild(new Node("'''"));
+				if (curChar < (char) 39 || curChar > (char) 39) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'''");
+				}
+				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'''"));
 				return cur;
 			}
 		}
@@ -424,20 +579,40 @@ public class Test {
 			if (c == curChar) {
 				C_NonTerm arg_1 = new C_NonTerm();
 				cur.addChild(f_NonTerm(arg_1));
+				if (curChar < (char) 45 || curChar > (char) 45) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'-'");
+				}
+				C__Terminal arg_2 = new C__Terminal("" + curChar);
+				curChar = fs.nextChar();
 				cur.addChild(new Node("'-'"));
+				if (curChar < (char) 62 || curChar > (char) 62) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'>'");
+				}
+				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
 				cur.addChild(new Node("'>'"));
-				curChar = fs.nextChar();
 				C_Unit arg_4 = new C_Unit();
 				cur.addChild(f_Unit(arg_4));
 				C_MaybeUnits arg_5 = new C_MaybeUnits();
 				cur.addChild(f_MaybeUnits(arg_5));
-				cur.addChild(new Node("':'"));
+				if (curChar < (char) 58 || curChar > (char) 58) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"':'");
+				}
+				C__Terminal arg_6 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("':'"));
 				C_Code arg_7 = new C_Code();
 				cur.addChild(f_Code(arg_7));
-				cur.addChild(new Node("';'"));
+				if (curChar < (char) 59 || curChar > (char) 59) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"';'");
+				}
+				C__Terminal arg_8 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("';'"));
 				C_Rules arg_9 = new C_Rules();
 				cur.addChild(f_Rules(arg_9));
 				return cur;
@@ -457,15 +632,25 @@ public class Test {
 		Node cur = new Node("SingleChar");
 		for (char c : new char[] { '!' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'!'"));
+				if (curChar < (char) 33 || curChar > (char) 33) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'!'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'!'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { '#', '&', '$', '%' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'#' — '&'"));
+				if (curChar < (char) 35 || curChar > (char) 38) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'#' — '&'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'#' — '&'"));
 				return cur;
 			}
 		}
@@ -475,8 +660,13 @@ public class Test {
 				'M', 'N', 'O', 'H', 'I', 'J', 'K', 'U', 'T', 'W', 'V', 'Q',
 				'P', 'S', 'R', 'Y', 'X', '[', 'Z' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'(' — '['"));
+				if (curChar < (char) 40 || curChar > (char) 91) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'(' — '['");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'(' — '['"));
 				return cur;
 			}
 		}
@@ -484,15 +674,25 @@ public class Test {
 				'`', 'a', 'n', 'o', 'l', 'm', 'j', 'k', 'h', 'i', 'w', 'v',
 				'u', 't', 's', 'r', 'q', 'p', '~', '}', '|', '{', 'z', 'y', 'x' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("']' — '~'"));
+				if (curChar < (char) 93 || curChar > (char) 126) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"']' — '~'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("']' — '~'"));
 				return cur;
 			}
 		}
 		for (char c : new char[] { '\\' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'\'"));
+				if (curChar < (char) 92 || curChar > (char) 92) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'\'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'\'"));
 				C_CharId arg_2 = new C_CharId();
 				cur.addChild(f_CharId(arg_2));
 				return cur;
@@ -505,8 +705,13 @@ public class Test {
 		Node cur = new Node("NonTermDef");
 		for (char c : new char[] { '$' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'$'"));
+				if (curChar < (char) 36 || curChar > (char) 36) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'$'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'$'"));
 				C_NonTerm arg_2 = new C_NonTerm();
 				cur.addChild(f_NonTerm(arg_2));
 				C_Code arg_3 = new C_Code();
@@ -556,6 +761,7 @@ public class Test {
 		for (char c : new char[] { '"', '\'', '$', '-', ';', ':', ']', '_',
 				'\uffff', '}', '{' }) {
 			if (c == curChar) {
+				C__Terminal arg_1 = new C__Terminal("");
 				cur.addChild(new Node("eps"));
 				return cur;
 			}
@@ -586,16 +792,31 @@ public class Test {
 		Node cur = new Node("CharRange");
 		for (char c : new char[] { '[' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'['"));
+				if (curChar < (char) 91 || curChar > (char) 91) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'['");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'['"));
 				C_RangeBoundary arg_2 = new C_RangeBoundary();
 				cur.addChild(f_RangeBoundary(arg_2));
-				cur.addChild(new Node("'-'"));
+				if (curChar < (char) 45 || curChar > (char) 45) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'-'");
+				}
+				C__Terminal arg_3 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'-'"));
 				C_RangeBoundary arg_4 = new C_RangeBoundary();
 				cur.addChild(f_RangeBoundary(arg_4));
-				cur.addChild(new Node("']'"));
+				if (curChar < (char) 93 || curChar > (char) 93) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"']'");
+				}
+				C__Terminal arg_5 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("']'"));
 				return cur;
 			}
 		}
@@ -639,8 +860,13 @@ public class Test {
 		}
 		for (char c : new char[] { '|' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'|'"));
+				if (curChar < (char) 124 || curChar > (char) 124) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'|'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'|'"));
 				C_Unit arg_2 = new C_Unit();
 				cur.addChild(f_Unit(arg_2));
 				C_MaybeUnits arg_3 = new C_MaybeUnits();
@@ -688,8 +914,13 @@ public class Test {
 		Node cur = new Node("Delims");
 		for (char c : new char[] { '_' }) {
 			if (c == curChar) {
-				cur.addChild(new Node("'_'"));
+				if (curChar < (char) 95 || curChar > (char) 95) {
+					throw new ParseException(fs.getPosition(), "" + curChar,
+							"'_'");
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
 				curChar = fs.nextChar();
+				cur.addChild(new Node("'_'"));
 				C_QuotedChars arg_2 = new C_QuotedChars();
 				cur.addChild(f_QuotedChars(arg_2));
 				return cur;
@@ -783,10 +1014,18 @@ public class Test {
 		C_File stNonTerm = new C_File();
 		Node ans = f_File(stNonTerm);
 		if (curChar != (char) -1) {
-			throw new ParseException(fs.getPosition(), "EOF", FileScanner
+			throw new ParseException(fs.getPosition(), "eof", FileScanner
 					.quoted("" + curChar));
 		}
 		return ans;
+	}
+}
+
+class C__Terminal {
+	public String text;
+
+	public C__Terminal(String text) {
+		this.text = text;
 	}
 }
 

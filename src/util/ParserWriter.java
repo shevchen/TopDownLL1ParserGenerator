@@ -24,12 +24,22 @@ public class ParserWriter {
 			Pair<GrammarUnit, String> p = r.right.get(i);
 			if (p.first instanceof Terminal) {
 				Terminal t = (Terminal) p.first;
-				out.println("cur.addChild(new Node(\""
-						+ t.toString().replaceAll("\"", "\\\\\"") + "\"));");
-				if (t.from != FirstFollowCounter.EOF
-						&& t.from != FirstFollowCounter.EPS) {
+				String escaped = '"' + t.toString().replaceAll("\"", "\\\\\"") + '"';
+				if (t.from == FirstFollowCounter.EPS) {
+					out.println("C__Terminal arg_" + (i + 1)
+							+ " = new C__Terminal(\"\");");
+				} else {
+					out.println("if (curChar < (char) " + (int) t.from
+							+ " || curChar > (char) " + (int) t.to + ") {");
+					out
+							.println("	throw new ParseException(fs.getPosition(), \"\" + curChar, "
+									+ escaped + ");");
+					out.println("}");
+					out.println("C__Terminal arg_" + (i + 1)
+							+ " = new C__Terminal(\"\" + curChar);");
 					out.println("curChar = fs.nextChar();");
 				}
+				out.println("cur.addChild(new Node(" + escaped + "));");
 			} else {
 				NonTerminal nt = (NonTerminal) p.first;
 				out.println("C_" + nt + " arg_" + (i + 1) + " = new C_" + nt
@@ -115,9 +125,17 @@ public class ParserWriter {
 		out.println("		Node ans = f_" + g.start + "(stNonTerm);");
 		out.println("		if (curChar != (char) -1) {");
 		out
-				.println("			throw new ParseException(fs.getPosition(), \"EOF\", FileScanner.quoted(\"\" + curChar));");
+				.println("			throw new ParseException(fs.getPosition(), \"eof\", FileScanner.quoted(\"\" + curChar));");
 		out.println("		}");
 		out.println("		return ans;");
+		out.println("	}");
+		out.println("}");
+		out.println();
+		out.println("class C__Terminal {");
+		out.println("	public String text;");
+		out.println();
+		out.println("	public C__Terminal(String text) {");
+		out.println("		this.text = text;");
 		out.println("	}");
 		out.println("}");
 		for (NonTerminal nt : g.rules.keySet()) {

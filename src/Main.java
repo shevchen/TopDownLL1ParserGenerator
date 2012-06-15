@@ -1,13 +1,17 @@
+import gen.GrammarFileParser;
+import grammar_file.GrammarFileDefinitionParser;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import gen.GrammarFileParser;
-import grammar_file.GrammarFileDefinitionParser;
+import util.FileScanner;
 import util.Grammar;
 import util.Node;
 import util.ParserGenerator;
 
 public class Main {
+	final static String gram = "math";
+
 	static void genFileParser() {
 		Grammar g;
 		try {
@@ -24,23 +28,34 @@ public class Main {
 		pg.writeFile("GrammarFileParser");
 	}
 
-	static void parseFile() {
+	static Node parseFile() {
 		Node n;
 		try {
-			n = new GrammarFileParser("math.g").getTree();
+			n = new GrammarFileParser(gram + ".g", FileScanner.whiteSpaces())
+					.getTree();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return;
+			return null;
 		}
 		try {
-			n.printAsDot(new PrintWriter("math.dot"));
+			n.printAsDot(new PrintWriter(gram + ".dot"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		return n;
+	}
+
+	static void genParser(Node n) {
+		// Grammar g = Grammar.fromTree(n);
+		// ParserGenerator pg = new ParserGenerator(g);
+		// pg.printFirst();
+		// pg.printFollow();
+		// pg.printIsLL1();
+		// pg.writeFile("Gen_" + gram);
 	}
 
 	public static void main(String[] args) {
 		// genFileParser();
-		parseFile();
+		genParser(parseFile());
 	}
 }

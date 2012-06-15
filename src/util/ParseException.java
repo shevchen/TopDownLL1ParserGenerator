@@ -1,12 +1,13 @@
 package util;
 
 public class ParseException extends Exception {
-	public ParseException(String position, String expected, String found) {
-		super("Parse error: expected " + expected + ", found " + found + " at "
-				+ position);
+	public ParseException(String position, String found, String expected) {
+		super("Parse error: expected " + StringUtils.quoted(expected)
+				+ ", found " + StringUtils.quoted(found) + " at " + position);
 	}
 
-	public ParseException(String position, char found) {
-		super("Parse error: unexpected " + found + " at " + position);
+	public ParseException(String position, String found) {
+		super("Parse error: unexpected " + StringUtils.quoted(found) + " at "
+				+ position);
 	}
 }

@@ -48,8 +48,8 @@ public class GrammarFileDefinitionParser {
 	private static void assertEquals(String exp, ParsedString s)
 			throws ParseException {
 		if (!exp.equals(s.str)) {
-			throw new ParseException(s.pos, StringUtils.quoted(exp),
-					StringUtils.quoted(s.str));
+			throw new ParseException(s.pos, StringUtils.quoted(s.str),
+					StringUtils.quoted(exp));
 		}
 	}
 
@@ -64,8 +64,8 @@ public class GrammarFileDefinitionParser {
 
 	private static char getChar(ParsedString parsed) throws ParseException {
 		String s = parsed.str;
-		ParseException e = new ParseException(parsed.pos, "character",
-				'"' + s + '"');
+		ParseException e = new ParseException(parsed.pos, '"' + s + '"',
+				"character");
 		if (s.charAt(0) == '"' || s.charAt(0) == '\'') {
 			if (s.length() == 2) {
 				if (s.charAt(1) == s.charAt(0)) {
@@ -92,11 +92,17 @@ public class GrammarFileDefinitionParser {
 
 	public static Grammar parseGrammarFileDefinition(String fileName)
 			throws FileNotFoundException, ParseException {
-		RawGrammar raw = getRawGrammar(new FileScanner(fileName));
+		RawGrammar raw = getRawGrammar(new FileScanner(fileName, FileScanner
+				.whiteSpaces()));
 		String header = null;
 		List<Pair<NonTerminal, String>> ntDefs = null;
 		NonTerminal start = new NonTerminal(raw.start.str);
-		List<Rule> ruleList = new ArrayList<Rule>(raw.rules.size());
+		List<Rule> ruleList = new ArrayList<Rule>();
+		for (char c : FileScanner.whiteSpaces()) {
+			List<Pair<GrammarUnit, String>> right = new ArrayList<Pair<GrammarUnit, String>>();
+			right.add(new Pair<GrammarUnit, String>(new Terminal(c), null));
+			ruleList.add(new Rule(new NonTerminal("WS"), right, null));
+		}
 		for (RuleString r : raw.rules) {
 			NonTerminal left = new NonTerminal(r.left.str);
 			List<Pair<GrammarUnit, String>> right = new ArrayList<Pair<GrammarUnit, String>>();

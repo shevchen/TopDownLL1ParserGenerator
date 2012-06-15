@@ -5,7 +5,7 @@ File -> Header NonTermDef Start Rules Delims ;
 Header -> Code | Eps ;
 Code -> "{" MaybeCodeChars "}" ;
 MaybeCodeChars -> CodeChar MaybeCodeChars | Eps ;
-CodeChar -> [ 33 - 122 ] | '|' | '~' ;
+CodeChar -> WS | [ 33 - 122 ] | '|' | '~' ;
 Eps -> "" ;
 
 NonTermDef -> "$" NonTerm Code NonTermDef | Eps ;
@@ -18,10 +18,12 @@ Digit -> [ "0" - "9" ] ;
 Start -> "-" ">" NonTerm ";" ;
 
 Rules -> NonTerm "-" ">" RightSide MaybeRightSides ";" Rules | Eps ;
-RightSide -> Unit MaybeUnits ":" Code ;
+RightSide -> Unit MaybeUnits MaybeSynthCode ;
+MaybeSynthCode -> ":" Code | Eps ;
 MaybeRightSides -> "|" RightSide MaybeRightSides | Eps ;
 MaybeUnits -> Unit MaybeUnits | Eps ;
-Unit -> Term | NonTerm Code ;
+Unit -> Term | NonTerm CodeWS ;
+CodeWS -> Code | WS ;
 Term -> QuotedMaybeChar | CharRange ;
 QuotedMaybeChar -> """ MaybeChar """ | "'" MaybeChar "'" ;
 MaybeChar -> SingleChar | Eps ;

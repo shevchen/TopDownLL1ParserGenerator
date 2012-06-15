@@ -6,8 +6,14 @@ public class StringUtils {
 	}
 
 	public static String bestView(char c, boolean needEscape) {
+		switch (c) {
+		case 9:
+			return "\\t";
+		case 10:
+			return "\\n";
+		}
 		if (c < 32 || c > 126) {
-			return "\\u" + String.format("%4x", (int) c);
+			return "\\u" + String.format("%04x", (int) c);
 		}
 		if (needEscape && (c == '\'' || c == '\\')) {
 			return "\\" + c;

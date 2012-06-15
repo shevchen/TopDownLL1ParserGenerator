@@ -29,17 +29,21 @@ public class ParserWriter {
 							+ " = new C__Terminal(\"\");");
 					out.println("cur.addChild(new Node(\"\"));");
 				} else {
-					out.println("if (curChar < (char) " + (int) t.from
+					out.println("while (curChar < (char) " + (int) t.from
 							+ " || curChar > (char) " + (int) t.to + ") {");
+					out.println("	if (fs.ignore(curChar)) {");
+					out.println("		curChar = fs.read();");
+					out.println("	} else {");
 					out
-							.println("	throw new ParseException(fs.getPosition(), \"\" + curChar, \""
+							.println("		throw new ParseException(fs.getPosition(), \"\" + curChar, \""
 									+ StringUtils.escape(t.toString()) + "\");");
+					out.println("	}");
 					out.println("}");
 					out.println("C__Terminal arg_" + (i + 1)
 							+ " = new C__Terminal(\"\" + curChar);");
 					out
 							.println("cur.addChild(new Node(\"\" + StringUtils.bestView(curChar, false)));");
-					out.println("curChar = fs.nextChar();");
+					out.println("curChar = fs.read();");
 				}
 			} else {
 				NonTerminal nt = (NonTerminal) p.first;
@@ -84,7 +88,12 @@ public class ParserWriter {
 			out.println("			}");
 			out.println("		}");
 		}
-		out.println("		throw new ParseException(fs.getPosition(), curChar);");
+		out.println("		if (fs.ignore(curChar)) {");
+		out.println("			curChar = fs.read();");
+		out.println("			return f_" + nt + "(arg_0);");
+		out.println("		}");
+		out
+				.println("		throw new ParseException(fs.getPosition(), \"\" + curChar);");
 		out.println("	}");
 	}
 
@@ -102,6 +111,7 @@ public class ParserWriter {
 		out.println("package gen;");
 		out.println();
 		out.println("import java.io.FileNotFoundException;");
+		out.println("import java.util.Set;");
 		out.println();
 		out.println("import util.FileScanner;");
 		out.println("import util.Node;");
@@ -113,10 +123,12 @@ public class ParserWriter {
 		out.println("	private FileScanner fs;");
 		out.println("	private char curChar;");
 		out.println();
-		out.println("	public " + className
-				+ "(String fileName) throws FileNotFoundException {");
-		out.println("		this.fs = new FileScanner(fileName);");
-		out.println("		curChar = fs.nextChar();");
+		out
+				.println("	public "
+						+ className
+						+ "(String fileName, Set<Character> ignore) throws FileNotFoundException {");
+		out.println("		this.fs = new FileScanner(fileName, ignore);");
+		out.println("		curChar = fs.read();");
 		out.println("	}");
 		for (NonTerminal nt : g.rules.keySet()) {
 			out.println();
@@ -128,7 +140,7 @@ public class ParserWriter {
 		out.println("		Node ans = f_" + g.start + "(stNonTerm);");
 		out.println("		if (curChar != (char) -1) {");
 		out
-				.println("			throw new ParseException(fs.getPosition(), \"eof\", StringUtils.quoted(\"\" + curChar));");
+				.println("			throw new ParseException(fs.getPosition(), \"eof\", \"\" + curChar);");
 		out.println("		}");
 		out.println("		return ans;");
 		out.println("	}");

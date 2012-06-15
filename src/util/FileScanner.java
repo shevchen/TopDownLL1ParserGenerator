@@ -4,30 +4,44 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FileScanner {
 	private BufferedReader br;
+	private Set<Character> ignore;
 	private int line, chr;
 	private final int FIRST = 1;
 	private StringBuilder sb;
 
-	public FileScanner(String fileName) throws FileNotFoundException {
+	public FileScanner(String fileName, Set<Character> ignore)
+			throws FileNotFoundException {
 		br = new BufferedReader(new FileReader(fileName));
+		this.ignore = ignore;
+		this.ignore.remove((char) -1);
 		line = FIRST;
-		chr = FIRST;
+		chr = FIRST - 1;
 		sb = new StringBuilder();
+	}
+
+	public static Set<Character> whiteSpaces() {
+		Set<Character> set = new HashSet<Character>();
+		set.add(' ');
+		set.add('\t');
+		set.add('\n');
+		return set;
 	}
 
 	final void shift(int c) {
 		if (c == '\n') {
 			++line;
-			chr = FIRST;
+			chr = FIRST - 1;
 		} else if (c != -1) {
 			++chr;
 		}
 	}
 
-	final char read() {
+	public char read() {
 		int c;
 		try {
 			c = br.read();
@@ -39,12 +53,8 @@ public class FileScanner {
 		return (char) c;
 	}
 
-	public char nextChar() {
-		char c;
-		do {
-			c = read();
-		} while (Character.isWhitespace(c));
-		return c;
+	public boolean ignore(char c) {
+		return ignore.contains(c);
 	}
 
 	public ParsedString nextToken() {
@@ -54,7 +64,7 @@ public class FileScanner {
 			c = read();
 		}
 		String pos = getPosition();
-		while (c != (char) -1 && !Character.isWhitespace(c)) {
+		while (c != (char) -1 && !ignore.contains(c)) {
 			sb.append(c);
 			c = read();
 		}
@@ -64,8 +74,8 @@ public class FileScanner {
 	public void assertEquals(String s) throws ParseException {
 		ParsedString next = nextToken();
 		if (!s.equals(next.str)) {
-			throw new ParseException(next.pos, StringUtils.quoted(s),
-					StringUtils.quoted(next.str));
+			throw new ParseException(next.pos, StringUtils.quoted(next.str),
+					StringUtils.quoted(s));
 		}
 	}
 

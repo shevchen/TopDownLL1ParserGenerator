@@ -3,7 +3,7 @@
 File -> Header NonTermDef Start Rules Delims ;
 
 Header -> Code ";" | Eps ;
-Code -> "#" MaybeCodeChars "#" | Eps ;
+Code -> "#" MaybeCodeChars "#" ;
 MaybeCodeChars -> CodeChar MaybeCodeChars | Eps ;
 CodeChar -> [ 0 - 34 ] | [ 36 - 127 ] ;
 Eps -> "" ;
@@ -17,15 +17,15 @@ Digit -> [ "0" - "9" ] ;
 
 Start -> "-" ">" NonTerm ";" ;
 
-Rules -> NonTerm "-" ">" Unit MaybeUnits MaybeSynthCode ";" Rules | Eps ;
-MaybeUnits -> Unit MaybeUnits | Eps ;
+Rules -> NonTerm "-" ">" Unit "," MaybeUnits MaybeSynthCode ";" Rules | Eps ;
+MaybeUnits -> Unit "|" MaybeUnits | Eps ;
 Unit -> Term | NonTerm MaybeInheritCode ;
 MaybeInheritCode -> Code | Eps ;
-MaybeSynthCode -> "|" Code | Eps ;
+MaybeSynthCode -> ":" Code | Eps ;
 Term -> QuotedMaybeChar | CharRange ;
 QuotedMaybeChar -> """ MaybeChar """ | "'" MaybeChar "'" ;
 MaybeChar -> SingleChar | Eps ;
-SingleChar -> [ 0 - 91 ] | [ 93 - 127 ] | "\" CharId ;
+SingleChar -> [ 0 - 33 ] | [ 35 - 38 ] | [ 40 - 91 ] | [ 93 - 127 ] | "\" CharId ;
 CharId -> Escaped | "u" Hex Hex Hex Hex ;
 Escaped -> "b" | "t" | "n" | "f" | "r" | """ | "'" | "\" ;
 Hex -> Digit | [ "a" - "f" ] | [ "A" - "F" ] ;

@@ -18,7 +18,7 @@ public class Rule {
 	public String toString() {
 		String ans = left + " -> ";
 		for (Pair<GrammarUnit, String> p : right) {
-			ans += p.first;
+			ans += p.first + " ";
 		}
 		return ans;
 	}

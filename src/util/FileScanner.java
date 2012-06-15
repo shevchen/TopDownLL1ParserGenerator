@@ -65,7 +65,7 @@ public class FileScanner {
 		return '\'' + s + '\'';
 	}
 
-	private static String bestViewInside(char c, boolean needEscape) {
+	public static String bestView(char c, boolean needEscape) {
 		if (c < 32 || c > 126) {
 			return "\\u" + String.format("%4x", (int) c);
 		}
@@ -75,8 +75,8 @@ public class FileScanner {
 		return "" + c;
 	}
 
-	public static String bestView(char c, boolean needEscape) {
-		return '\'' + bestViewInside(c, needEscape) + '\'';
+	public static String escape(String s) {
+		return s.replaceAll("([\"\\\\])", "\\\\$1");
 	}
 
 	public void assertEquals(String s) throws ParseException {

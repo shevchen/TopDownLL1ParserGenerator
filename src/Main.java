@@ -1,3 +1,6 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 import gen.GrammarFileParser;
 import grammar_file.GrammarFileDefinitionParser;
 import util.Grammar;
@@ -21,17 +24,23 @@ public class Main {
 		pg.writeFile("GrammarFileParser");
 	}
 
-	static Node parseFile() {
+	static void parseFile() {
+		Node n;
 		try {
-			return new GrammarFileParser("math.g").getTree();
+			n = new GrammarFileParser("math.g").getTree();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return;
+		}
+		try {
+			n.printAsDot(new PrintWriter("math.dot"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 
 	public static void main(String[] args) {
-		genFileParser();
-		// parseFile();
+		// genFileParser();
+		parseFile();
 	}
 }

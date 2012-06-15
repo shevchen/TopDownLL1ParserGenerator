@@ -24,22 +24,23 @@ public class ParserWriter {
 			Pair<GrammarUnit, String> p = r.right.get(i);
 			if (p.first instanceof Terminal) {
 				Terminal t = (Terminal) p.first;
-				String escaped = '"' + t.toString().replaceAll("\"", "\\\\\"") + '"';
 				if (t.from == FirstFollowCounter.EPS) {
 					out.println("C__Terminal arg_" + (i + 1)
 							+ " = new C__Terminal(\"\");");
+					out.println("cur.addChild(new Node(\"\"));");
 				} else {
 					out.println("if (curChar < (char) " + (int) t.from
 							+ " || curChar > (char) " + (int) t.to + ") {");
 					out
-							.println("	throw new ParseException(fs.getPosition(), \"\" + curChar, "
-									+ escaped + ");");
+							.println("	throw new ParseException(fs.getPosition(), \"\" + curChar, \""
+									+ FileScanner.escape(t.toString()) + "\");");
 					out.println("}");
 					out.println("C__Terminal arg_" + (i + 1)
 							+ " = new C__Terminal(\"\" + curChar);");
+					out
+							.println("cur.addChild(new Node(\"\" + FileScanner.bestView(curChar, false)));");
 					out.println("curChar = fs.nextChar();");
 				}
-				out.println("cur.addChild(new Node(" + escaped + "));");
 			} else {
 				NonTerminal nt = (NonTerminal) p.first;
 				out.println("C_" + nt + " arg_" + (i + 1) + " = new C_" + nt
@@ -72,7 +73,8 @@ public class ParserWriter {
 				if (i > 0) {
 					sb.append(',');
 				}
-				sb.append(FileScanner.bestView(chars[i], true));
+				sb.append(FileScanner.quoted(FileScanner.bestView(chars[i],
+						true)));
 			}
 			sb.append('}');
 			out.println("		for (char c : new char[]" + sb.toString() + ") {");

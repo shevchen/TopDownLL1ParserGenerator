@@ -17,8 +17,10 @@ Digit -> [ "0" - "9" ] ;
 
 Start -> "-" ">" NonTerm ";" ;
 
-Rules -> NonTerm "-" ">" Unit MaybeUnits ":" Code ";" Rules | Eps ;
-MaybeUnits -> Unit MaybeUnits | "|" Unit MaybeUnits | Eps ;
+Rules -> NonTerm "-" ">" RightSide MaybeRightSides ";" Rules | Eps ;
+RightSide -> Unit MaybeUnits ":" Code ;
+MaybeRightSides -> "|" RightSide MaybeRightSides | Eps ;
+MaybeUnits -> Unit MaybeUnits | Eps ;
 Unit -> Term | NonTerm Code ;
 Term -> QuotedMaybeChar | CharRange ;
 QuotedMaybeChar -> """ MaybeChar """ | "'" MaybeChar "'" ;

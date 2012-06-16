@@ -1,3 +1,6 @@
+$ E { int sum = 0; }
+$ E2 { int sum = 0; }
+
 -> E;
 
 E -> T E2 ;

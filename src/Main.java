@@ -10,13 +10,13 @@ import util.Node;
 import util.ParserGenerator;
 
 public class Main {
-	final static String gram = "math";
+	final static String gram = "grammarFile";
 
 	static void genFileParser() {
 		Grammar g;
 		try {
 			g = GrammarFileDefinitionParser
-					.parseGrammarFileDefinition("grammarFile.gg");
+					.parseGrammarFileDefinition("grammarFile.g");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;

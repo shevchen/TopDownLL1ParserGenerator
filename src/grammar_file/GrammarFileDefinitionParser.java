@@ -79,6 +79,12 @@ public class GrammarFileDefinitionParser {
 				} else {
 					throw e;
 				}
+			} else if (s.length() == 4 && s.charAt(1) == '\\') {
+				if (s.charAt(3) == s.charAt(0)) {
+					return s.charAt(2);
+				} else {
+					throw e;
+				}
 			} else {
 				throw e;
 			}

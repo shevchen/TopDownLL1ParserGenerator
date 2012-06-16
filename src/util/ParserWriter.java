@@ -27,7 +27,7 @@ public class ParserWriter {
 				if (t.from == FirstFollowCounter.EPS) {
 					out.println("C__Terminal arg_" + (i + 1)
 							+ " = new C__Terminal(\"\");");
-					out.println("cur.addChild(new Node(\"\"));");
+					out.println("cur.addChild(new Node(\"\", (char) -1));");
 				} else {
 					out.println("while (curChar < (char) " + (int) t.from
 							+ " || curChar > (char) " + (int) t.to + ") {");
@@ -42,7 +42,7 @@ public class ParserWriter {
 					out.println("C__Terminal arg_" + (i + 1)
 							+ " = new C__Terminal(\"\" + curChar);");
 					out
-							.println("cur.addChild(new Node(\"\" + StringUtils.bestView(curChar, false)));");
+							.println("cur.addChild(new Node(\"\" + StringUtils.bestView(curChar, false), curChar));");
 					out.println("curChar = fs.read();");
 				}
 			} else {
@@ -50,20 +50,20 @@ public class ParserWriter {
 				out.println("C_" + nt + " arg_" + (i + 1) + " = new C_" + nt
 						+ "();");
 				if (p.second != null) {
-					out.println(p.second.replaceAll("$", "arg_"));
+					out.println(p.second.replaceAll("\\$", "arg_"));
 				}
 				out.println("cur.addChild(f_" + nt + "(arg_" + (i + 1) + "));");
 			}
 		}
 		if (r.synthCode != null) {
-			out.println(r.synthCode.replaceAll("$", "arg_"));
+			out.println(r.synthCode.replaceAll("\\$", "arg_"));
 		}
 	}
 
 	private void writeMethod(PrintWriter out, NonTerminal nt) {
 		out.println("	private Node f_" + nt + "(C_" + nt
 				+ " arg_0) throws ParseException {");
-		out.println("		Node cur = new Node(\"" + nt + "\");");
+		out.println("		Node cur = new Node(\"" + nt + "\", (char) -1);");
 		for (Rule r : g.rules.get(nt)) {
 			temp.clear();
 			ffc.addAllFirst(temp, r, 0);
@@ -98,11 +98,11 @@ public class ParserWriter {
 	}
 
 	private void writeClass(PrintWriter out, NonTerminal nt) {
-		out.println("class C_" + nt + " {");
+		out.println("	class C_" + nt + " {");
 		if (g.nonTermDefs.containsKey(nt)) {
 			out.println(g.nonTermDefs.get(nt));
 		}
-		out.println("}");
+		out.println("	}");
 	}
 
 	public void writeFile(String className) throws FileNotFoundException {
@@ -119,6 +119,7 @@ public class ParserWriter {
 		out.println("import util.StringUtils;");
 		out.println(g.header);
 		out.println();
+		out.println("@SuppressWarnings(\"unused\")");
 		out.println("public class " + className + " {");
 		out.println("	private FileScanner fs;");
 		out.println("	private char curChar;");
@@ -140,23 +141,24 @@ public class ParserWriter {
 		out.println("		Node ans = f_" + g.start + "(stNonTerm);");
 		out.println("		if (curChar != (char) -1) {");
 		out
-				.println("			throw new ParseException(fs.getPosition(), \"eof\", \"\" + curChar);");
+				.println("			throw new ParseException(fs.getPosition(), \"\" + curChar, \"eof\");");
 		out.println("		}");
 		out.println("		return ans;");
 		out.println("	}");
-		out.println("}");
+
 		out.println();
-		out.println("class C__Terminal {");
-		out.println("	public String text;");
+		out.println("	class C__Terminal {");
+		out.println("		public String text;");
 		out.println();
-		out.println("	public C__Terminal(String text) {");
-		out.println("		this.text = text;");
+		out.println("		public C__Terminal(String text) {");
+		out.println("			this.text = text;");
+		out.println("		}");
 		out.println("	}");
-		out.println("}");
 		for (NonTerminal nt : g.rules.keySet()) {
 			out.println();
 			writeClass(out, nt);
 		}
+		out.println("}");
 		out.close();
 	}
 }

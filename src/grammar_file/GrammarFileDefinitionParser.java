@@ -104,11 +104,7 @@ public class GrammarFileDefinitionParser {
 		List<Pair<NonTerminal, String>> ntDefs = null;
 		NonTerminal start = new NonTerminal(raw.start.str);
 		List<Rule> ruleList = new ArrayList<Rule>();
-		for (char c : FileScanner.whiteSpaces()) {
-			List<Pair<GrammarUnit, String>> right = new ArrayList<Pair<GrammarUnit, String>>();
-			right.add(new Pair<GrammarUnit, String>(new Terminal(c), null));
-			ruleList.add(new Rule(new NonTerminal("WS"), right, null));
-		}
+		Grammar.addDefaultRules(ruleList);
 		for (RuleString r : raw.rules) {
 			NonTerminal left = new NonTerminal(r.left.str);
 			List<Pair<GrammarUnit, String>> right = new ArrayList<Pair<GrammarUnit, String>>();

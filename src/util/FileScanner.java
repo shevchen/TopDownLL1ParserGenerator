@@ -29,6 +29,7 @@ public class FileScanner {
 		set.add(' ');
 		set.add('\t');
 		set.add('\n');
+		set.add('\r');
 		return set;
 	}
 

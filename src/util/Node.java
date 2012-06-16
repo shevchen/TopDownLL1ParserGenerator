@@ -8,10 +8,16 @@ public class Node {
 	private String name;
 	private List<Node> children;
 	private int id;
+	private char realChar;
 
-	public Node(String name) {
+	public Node(String name, char realChar) {
 		this.name = StringUtils.escape(name);
+		this.realChar = realChar;
 		this.children = new ArrayList<Node>();
+	}
+	
+	public char getChar() {
+		return realChar;
 	}
 
 	public String toString() {
@@ -20,6 +26,14 @@ public class Node {
 
 	public void addChild(Node child) {
 		children.add(child);
+	}
+
+	public Node getChild(int n) {
+		return children.get(n);
+	}
+
+	public boolean isTerminal() {
+		return children.isEmpty();
 	}
 
 	private int printDot(PrintWriter out, int id) {

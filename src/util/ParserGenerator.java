@@ -24,9 +24,9 @@ public class ParserGenerator {
 					first = false;
 				}
 				if (c == FirstFollowCounter.EPS) {
-					System.out.print("EPS");
+					System.out.print("eps");
 				} else if (c == FirstFollowCounter.EOF) {
-					System.out.print("EOF");
+					System.out.print("eof");
 				} else if (c < 32) {
 					System.out.print((int) c);
 				} else {

@@ -110,7 +110,7 @@ public class GrammarFileDefinitionParser {
 			for (Iterator<ParsedString> it = r.right.iterator(); it.hasNext();) {
 				ParsedString s = it.next();
 				if ("|".equals(s.str)) {
-					ruleList.add(new Rule(left, right, null));
+					ruleList.add(new Rule(left, null, right, null));
 					right = new ArrayList<Pair<GrammarUnit, String>>();
 				} else if ("[".equals(s.str)) {
 					addRange(it, right);
@@ -123,7 +123,7 @@ public class GrammarFileDefinitionParser {
 							s.str), null));
 				}
 			}
-			ruleList.add(new Rule(left, right, null));
+			ruleList.add(new Rule(left, null, right, null));
 		}
 		return new Grammar(header, ntDefs, start, ruleList);
 	}

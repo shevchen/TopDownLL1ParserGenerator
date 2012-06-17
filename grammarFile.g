@@ -17,7 +17,7 @@ Digit -> [ "0" - "9" ] ;
 Start -> "-" ">" NonTerm ";" ;
 
 Rules -> NonTerm "-" ">" RightSide MaybeRightSides ";" Rules | Eps ;
-RightSide -> Unit MaybeUnits MaybeSynthCode ;
+RightSide -> CodeWS Unit MaybeUnits MaybeSynthCode ;
 MaybeSynthCode -> ":" Code | Eps ;
 MaybeRightSides -> "|" RightSide MaybeRightSides | Eps ;
 MaybeUnits -> Unit MaybeUnits | Eps ;

@@ -20,13 +20,16 @@ public class ParserWriter {
 	}
 
 	private void processRule(PrintWriter out, Rule r) {
+		if (r.initCode != null) {
+			out.println(r.initCode.replaceAll("\\$", "arg_"));
+		}
 		for (int i = 0; i < r.right.size(); ++i) {
 			Pair<GrammarUnit, String> p = r.right.get(i);
 			if (p.first instanceof Terminal) {
 				Terminal t = (Terminal) p.first;
 				if (t.from == FirstFollowCounter.EPS) {
 					out.println("C__Terminal arg_" + (i + 1)
-							+ " = new C__Terminal(\"\");");
+							+ " = new C__Terminal((char) -1);");
 					out.println("cur.addChild(new Node(\"\", (char) -1));");
 				} else {
 					out.println("while (curChar < (char) " + (int) t.from
@@ -40,7 +43,7 @@ public class ParserWriter {
 					out.println("	}");
 					out.println("}");
 					out.println("C__Terminal arg_" + (i + 1)
-							+ " = new C__Terminal(\"\" + curChar);");
+							+ " = new C__Terminal(curChar);");
 					out
 							.println("cur.addChild(new Node(\"\" + StringUtils.bestView(curChar, false), curChar));");
 					out.println("curChar = fs.read();");
@@ -123,10 +126,8 @@ public class ParserWriter {
 		out.println("	private FileScanner fs;");
 		out.println("	private char curChar;");
 		out.println();
-		out
-				.println("	public "
-						+ className
-						+ "(String fileName) throws FileNotFoundException {");
+		out.println("	public " + className
+				+ "(String fileName) throws FileNotFoundException {");
 		out.println("		this.fs = new FileScanner(fileName);");
 		out.println("		curChar = fs.read();");
 		out.println("	}");
@@ -147,10 +148,10 @@ public class ParserWriter {
 
 		out.println();
 		out.println("	class C__Terminal {");
-		out.println("		public String text;");
+		out.println("		public char c;");
 		out.println();
-		out.println("		public C__Terminal(String text) {");
-		out.println("			this.text = text;");
+		out.println("		public C__Terminal(char c) {");
+		out.println("			this.c = c;");
 		out.println("		}");
 		out.println("	}");
 		for (NonTerminal nt : g.rules.keySet()) {

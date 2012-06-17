@@ -50,7 +50,7 @@ Number -> Digit MaybeDigits : {
 };
 
 Digit -> ['0' - '9'] : {
-	$0.value = $1.text.charAt(0) - '0';
+	$0.value = $1.c - '0';
 };
 
 MaybeDigits -> Digit MaybeDigits : {

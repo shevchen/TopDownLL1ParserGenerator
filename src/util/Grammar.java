@@ -48,13 +48,13 @@ public class Grammar {
 		for (char c : new char[] { ' ', '\t', '\n', '\r' }) {
 			List<Pair<GrammarUnit, String>> right = new ArrayList<Pair<GrammarUnit, String>>();
 			right.add(new Pair<GrammarUnit, String>(new Terminal(c), null));
-			ruleList.add(new Rule(new NonTerminal("WS"), right, null));
+			ruleList.add(new Rule(new NonTerminal("WS"), null, right, null));
 		}
 		// Eps
 		List<Pair<GrammarUnit, String>> right = new ArrayList<Pair<GrammarUnit, String>>();
 		right.add(new Pair<GrammarUnit, String>(new Terminal(
 				FirstFollowCounter.EPS), null));
-		ruleList.add(new Rule(new NonTerminal("Eps"), right, null));
+		ruleList.add(new Rule(new NonTerminal("Eps"), null, right, null));
 	}
 
 	private static String parseCode(Node code) {
@@ -157,21 +157,26 @@ public class Grammar {
 
 	private static void parseRightSide(Node rightSide, NonTerminal left,
 			List<Rule> ans) {
+		Node mbInit = rightSide.getChild(0);
+		String initCode = null;
+		if (!"WS".equalsIgnoreCase(mbInit.getChild(0).toString())) {
+			initCode = parseCode(mbInit.getChild(0));
+		}
 		List<Pair<GrammarUnit, String>> right = new ArrayList<Pair<GrammarUnit, String>>();
-		addUnit(rightSide.getChild(0), right);
-		Node mbUnits = rightSide.getChild(1);
+		addUnit(rightSide.getChild(1), right);
+		Node mbUnits = rightSide.getChild(2);
 		Node unit = mbUnits.getChild(0);
 		while (!"Eps".equalsIgnoreCase(unit.toString())) {
 			addUnit(unit, right);
 			mbUnits = mbUnits.getChild(1);
 			unit = mbUnits.getChild(0);
 		}
-		Node mbSynth = rightSide.getChild(2);
+		Node mbSynth = rightSide.getChild(3);
 		String synthCode = null;
 		if (!"Eps".equalsIgnoreCase(mbSynth.getChild(0).toString())) {
 			synthCode = parseCode(mbSynth.getChild(1));
 		}
-		ans.add(new Rule(left, right, synthCode));
+		ans.add(new Rule(left, initCode, right, synthCode));
 	}
 
 	private static List<Rule> getRules(Node rules) {

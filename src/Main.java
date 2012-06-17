@@ -1,15 +1,11 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 import gen.Gen_math;
 import gen.GrammarFileParser;
 import grammar_file.GrammarFileDefinitionParser;
-
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Set;
-
-import util.FileScanner;
 import util.Grammar;
 import util.Node;
-import util.Pair;
 import util.ParserGenerator;
 
 public class Main {
@@ -35,8 +31,7 @@ public class Main {
 	static Node parseFile() {
 		Node n;
 		try {
-			n = new GrammarFileParser(gram + ".g", FileScanner.whiteSpaces())
-					.getTree();
+			n = new GrammarFileParser(gram + ".g").getTree();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -50,9 +45,9 @@ public class Main {
 	}
 
 	static void genParser(Node n) {
-		Pair<Grammar, Set<Character>> g = Grammar.fromTree(n);
-		// System.out.println(g.first);
-		ParserGenerator pg = new ParserGenerator(g.first);
+		Grammar g = Grammar.fromTree(n);
+		// System.out.println(g);
+		ParserGenerator pg = new ParserGenerator(g);
 		// pg.printFirst();
 		// pg.printFollow();
 		// pg.printIsLL1();
@@ -62,7 +57,7 @@ public class Main {
 	static void parseExpr() {
 		Node n;
 		try {
-			n = new Gen_math(expr, FileScanner.whiteSpaces()).getTree();
+			n = new Gen_math(expr).getTree();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;

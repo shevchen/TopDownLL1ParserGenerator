@@ -4,33 +4,18 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 public class FileScanner {
 	private BufferedReader br;
-	private Set<Character> ignore;
 	private int line, chr;
 	private final int FIRST = 1;
 	private StringBuilder sb;
 
-	public FileScanner(String fileName, Set<Character> ignore)
-			throws FileNotFoundException {
+	public FileScanner(String fileName) throws FileNotFoundException {
 		br = new BufferedReader(new FileReader(fileName));
-		this.ignore = ignore;
-		this.ignore.remove((char) -1);
 		line = FIRST;
 		chr = FIRST - 1;
 		sb = new StringBuilder();
-	}
-
-	public static Set<Character> whiteSpaces() {
-		Set<Character> set = new HashSet<Character>();
-		set.add(' ');
-		set.add('\t');
-		set.add('\n');
-		set.add('\r');
-		return set;
 	}
 
 	final void shift(int c) {
@@ -54,8 +39,8 @@ public class FileScanner {
 		return (char) c;
 	}
 
-	public boolean ignore(char c) {
-		return ignore.contains(c);
+	public final boolean ignore(char c) {
+		return Character.isWhitespace(c);
 	}
 
 	public ParsedString nextToken() {
@@ -65,7 +50,7 @@ public class FileScanner {
 			c = read();
 		}
 		String pos = getPosition();
-		while (c != (char) -1 && !ignore.contains(c)) {
+		while (c != (char) -1 && !ignore(c)) {
 			sb.append(c);
 			c = read();
 		}

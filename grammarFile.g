@@ -1,6 +1,6 @@
 -> File ;
 
-File -> Header NonTermDef Start Rules Delims ;
+File -> Header NonTermDef Start Rules ;
 
 Header -> Code | Eps ;
 Code -> "{" MaybeCodeChars "}" ;
@@ -24,15 +24,12 @@ MaybeUnits -> Unit MaybeUnits | Eps ;
 Unit -> Term | NonTerm CodeWS ;
 CodeWS -> Code | WS ;
 Term -> QuotedChar | CharRange ;
-QuotedChar -> "\"" SingleChar "\"" | "\'" SingleChar "\'" ;
-SingleChar -> [ 32 - 33 ] | [ 35 - 38 ] | [ 40 - 91 ] | [ 93 - 126 ] | "\\" CharId ;
+QuotedChar -> """ SingleChar """ | "'" SingleChar "'" ;
+SingleChar -> [ 32 - 91 ] | [ 93 - 126 ] | "\\" CharId ;
 CharId -> Escaped | "u" Hex Hex Hex Hex ;
-Escaped -> "b" | "t" | "n" | "f" | "r" | "\"" | "\'" | "\\" ;
+Escaped -> "b" | "t" | "n" | "f" | "r" | """ | "'" | "\\" ;
 Hex -> Digit | [ "a" - "f" ] | [ "A" - "F" ] ;
 CharRange -> "[" RangeBoundary "-" RangeBoundary "]" ;
 RangeBoundary -> Int | QuotedChar ;
 Int -> Digit MaybeDigits ;
 MaybeDigits -> Digit MaybeDigits | Eps ;
-
-Delims -> "_" QuotedChars | Eps ;
-QuotedChars -> QuotedChar QuotedChars | Eps ;

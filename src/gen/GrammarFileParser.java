@@ -1,7 +1,6 @@
 package gen;
 
 import java.io.FileNotFoundException;
-import java.util.Set;
 
 import util.FileScanner;
 import util.Node;
@@ -13,9 +12,8 @@ public class GrammarFileParser {
 	private FileScanner fs;
 	private char curChar;
 
-	public GrammarFileParser(String fileName, Set<Character> ignore)
-			throws FileNotFoundException {
-		this.fs = new FileScanner(fileName, ignore);
+	public GrammarFileParser(String fileName) throws FileNotFoundException {
+		this.fs = new FileScanner(fileName);
 		curChar = fs.read();
 	}
 
@@ -343,41 +341,6 @@ public class GrammarFileParser {
 		throw new ParseException(fs.getPosition(), "" + curChar);
 	}
 
-	private Node f_Delims(C_Delims arg_0) throws ParseException {
-		Node cur = new Node("Delims", (char) -1);
-		for (char c : new char[] { '_' }) {
-			if (c == curChar) {
-				while (curChar < (char) 95 || curChar > (char) 95) {
-					if (fs.ignore(curChar)) {
-						curChar = fs.read();
-					} else {
-						throw new ParseException(fs.getPosition(),
-								"" + curChar, "_");
-					}
-				}
-				C__Terminal arg_1 = new C__Terminal("" + curChar);
-				cur.addChild(new Node(
-						"" + StringUtils.bestView(curChar, false), curChar));
-				curChar = fs.read();
-				C_QuotedChars arg_2 = new C_QuotedChars();
-				cur.addChild(f_QuotedChars(arg_2));
-				return cur;
-			}
-		}
-		for (char c : new char[] { '\uffff' }) {
-			if (c == curChar) {
-				C_Eps arg_1 = new C_Eps();
-				cur.addChild(f_Eps(arg_1));
-				return cur;
-			}
-		}
-		if (fs.ignore(curChar)) {
-			curChar = fs.read();
-			return f_Delims(arg_0);
-		}
-		throw new ParseException(fs.getPosition(), "" + curChar);
-	}
-
 	private Node f_Digit(C_Digit arg_0) throws ParseException {
 		Node cur = new Node("Digit", (char) -1);
 		for (char c : new char[] { '3', '2', '1', '0', '7', '6', '5', '4', '9',
@@ -408,7 +371,7 @@ public class GrammarFileParser {
 	private Node f_Eps(C_Eps arg_0) throws ParseException {
 		Node cur = new Node("Eps", (char) -1);
 		for (char c : new char[] { '\t', '\n', '\r', ' ', '$', '-', ';', ':',
-				']', '_', '\uffff', '}', '|', '{' }) {
+				']', '\uffff', '}', '|', '{' }) {
 			if (c == curChar) {
 				C__Terminal arg_1 = new C__Terminal("");
 				cur.addChild(new Node("", (char) -1));
@@ -579,8 +542,6 @@ public class GrammarFileParser {
 				cur.addChild(f_Start(arg_3));
 				C_Rules arg_4 = new C_Rules();
 				cur.addChild(f_Rules(arg_4));
-				C_Delims arg_5 = new C_Delims();
-				cur.addChild(f_Delims(arg_5));
 				return cur;
 			}
 		}
@@ -1007,31 +968,6 @@ public class GrammarFileParser {
 		throw new ParseException(fs.getPosition(), "" + curChar);
 	}
 
-	private Node f_QuotedChars(C_QuotedChars arg_0) throws ParseException {
-		Node cur = new Node("QuotedChars", (char) -1);
-		for (char c : new char[] { '"', '\'' }) {
-			if (c == curChar) {
-				C_QuotedChar arg_1 = new C_QuotedChar();
-				cur.addChild(f_QuotedChar(arg_1));
-				C_QuotedChars arg_2 = new C_QuotedChars();
-				cur.addChild(f_QuotedChars(arg_2));
-				return cur;
-			}
-		}
-		for (char c : new char[] { '\uffff' }) {
-			if (c == curChar) {
-				C_Eps arg_1 = new C_Eps();
-				cur.addChild(f_Eps(arg_1));
-				return cur;
-			}
-		}
-		if (fs.ignore(curChar)) {
-			curChar = fs.read();
-			return f_QuotedChars(arg_0);
-		}
-		throw new ParseException(fs.getPosition(), "" + curChar);
-	}
-
 	private Node f_RangeBoundary(C_RangeBoundary arg_0) throws ParseException {
 		Node cur = new Node("RangeBoundary", (char) -1);
 		for (char c : new char[] { '3', '2', '1', '0', '7', '6', '5', '4', '9',
@@ -1135,7 +1071,7 @@ public class GrammarFileParser {
 				return cur;
 			}
 		}
-		for (char c : new char[] { '_', '\uffff' }) {
+		for (char c : new char[] { '\uffff' }) {
 			if (c == curChar) {
 				C_Eps arg_1 = new C_Eps();
 				cur.addChild(f_Eps(arg_1));
@@ -1151,52 +1087,19 @@ public class GrammarFileParser {
 
 	private Node f_SingleChar(C_SingleChar arg_0) throws ParseException {
 		Node cur = new Node("SingleChar", (char) -1);
-		for (char c : new char[] { ' ', '!' }) {
+		for (char c : new char[] { '"', '#', ' ', '!', '&', '\'', '$', '%',
+				'*', '+', '(', ')', '.', '/', ',', '-', '3', '2', '1', '0',
+				'7', '6', '5', '4', ';', ':', '9', '8', '?', '>', '=', '<',
+				'D', 'E', 'F', 'G', '@', 'A', 'B', 'C', 'L', 'M', 'N', 'O',
+				'H', 'I', 'J', 'K', 'U', 'T', 'W', 'V', 'Q', 'P', 'S', 'R',
+				'Y', 'X', '[', 'Z' }) {
 			if (c == curChar) {
-				while (curChar < (char) 32 || curChar > (char) 33) {
+				while (curChar < (char) 32 || curChar > (char) 91) {
 					if (fs.ignore(curChar)) {
 						curChar = fs.read();
 					} else {
 						throw new ParseException(fs.getPosition(),
-								"" + curChar, "  — !");
-					}
-				}
-				C__Terminal arg_1 = new C__Terminal("" + curChar);
-				cur.addChild(new Node(
-						"" + StringUtils.bestView(curChar, false), curChar));
-				curChar = fs.read();
-				return cur;
-			}
-		}
-		for (char c : new char[] { '#', '&', '$', '%' }) {
-			if (c == curChar) {
-				while (curChar < (char) 35 || curChar > (char) 38) {
-					if (fs.ignore(curChar)) {
-						curChar = fs.read();
-					} else {
-						throw new ParseException(fs.getPosition(),
-								"" + curChar, "# — &");
-					}
-				}
-				C__Terminal arg_1 = new C__Terminal("" + curChar);
-				cur.addChild(new Node(
-						"" + StringUtils.bestView(curChar, false), curChar));
-				curChar = fs.read();
-				return cur;
-			}
-		}
-		for (char c : new char[] { '*', '+', '(', ')', '.', '/', ',', '-', '3',
-				'2', '1', '0', '7', '6', '5', '4', ';', ':', '9', '8', '?',
-				'>', '=', '<', 'D', 'E', 'F', 'G', '@', 'A', 'B', 'C', 'L',
-				'M', 'N', 'O', 'H', 'I', 'J', 'K', 'U', 'T', 'W', 'V', 'Q',
-				'P', 'S', 'R', 'Y', 'X', '[', 'Z' }) {
-			if (c == curChar) {
-				while (curChar < (char) 40 || curChar > (char) 91) {
-					if (fs.ignore(curChar)) {
-						curChar = fs.read();
-					} else {
-						throw new ParseException(fs.getPosition(),
-								"" + curChar, "( — [");
+								"" + curChar, "  — [");
 					}
 				}
 				C__Terminal arg_1 = new C__Terminal("" + curChar);
@@ -1470,9 +1373,6 @@ public class GrammarFileParser {
 	class C_CodeWS {
 	}
 
-	class C_Delims {
-	}
-
 	class C_Digit {
 	}
 
@@ -1519,9 +1419,6 @@ public class GrammarFileParser {
 	}
 
 	class C_QuotedChar {
-	}
-
-	class C_QuotedChars {
 	}
 
 	class C_RangeBoundary {

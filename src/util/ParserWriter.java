@@ -111,7 +111,6 @@ public class ParserWriter {
 		out.println("package gen;");
 		out.println();
 		out.println("import java.io.FileNotFoundException;");
-		out.println("import java.util.Set;");
 		out.println();
 		out.println("import util.FileScanner;");
 		out.println("import util.Node;");
@@ -127,8 +126,8 @@ public class ParserWriter {
 		out
 				.println("	public "
 						+ className
-						+ "(String fileName, Set<Character> ignore) throws FileNotFoundException {");
-		out.println("		this.fs = new FileScanner(fileName, ignore);");
+						+ "(String fileName) throws FileNotFoundException {");
+		out.println("		this.fs = new FileScanner(fileName);");
 		out.println("		curChar = fs.read();");
 		out.println("	}");
 		for (NonTerminal nt : g.rules.keySet()) {

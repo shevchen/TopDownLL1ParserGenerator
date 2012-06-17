@@ -1,7 +1,6 @@
 package gen;
 
 import java.io.FileNotFoundException;
-import java.util.Set;
 
 import util.FileScanner;
 import util.Node;
@@ -13,9 +12,8 @@ public class Gen_math {
 	private FileScanner fs;
 	private char curChar;
 
-	public Gen_math(String fileName, Set<Character> ignore)
-			throws FileNotFoundException {
-		this.fs = new FileScanner(fileName, ignore);
+	public Gen_math(String fileName) throws FileNotFoundException {
+		this.fs = new FileScanner(fileName);
 		curChar = fs.read();
 	}
 
@@ -57,9 +55,10 @@ public class Gen_math {
 				C_T arg_1 = new C_T();
 				cur.addChild(f_T(arg_1));
 				C_E2 arg_2 = new C_E2();
+				arg_2.toRight = arg_1.prod;
 				cur.addChild(f_E2(arg_2));
 
-				arg_0.sum = arg_1.prod + arg_2.sum;
+				arg_0.sum = arg_2.sum;
 
 				return cur;
 			}
@@ -90,9 +89,35 @@ public class Gen_math {
 				C_T arg_2 = new C_T();
 				cur.addChild(f_T(arg_2));
 				C_E2 arg_3 = new C_E2();
+				arg_3.toRight = arg_0.toRight + arg_2.prod;
 				cur.addChild(f_E2(arg_3));
 
-				arg_0.sum = arg_2.prod + arg_3.sum;
+				arg_0.sum = arg_3.sum;
+
+				return cur;
+			}
+		}
+		for (char c : new char[] { '-' }) {
+			if (c == curChar) {
+				while (curChar < (char) 45 || curChar > (char) 45) {
+					if (fs.ignore(curChar)) {
+						curChar = fs.read();
+					} else {
+						throw new ParseException(fs.getPosition(),
+								"" + curChar, "-");
+					}
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
+				cur.addChild(new Node(
+						"" + StringUtils.bestView(curChar, false), curChar));
+				curChar = fs.read();
+				C_T arg_2 = new C_T();
+				cur.addChild(f_T(arg_2));
+				C_E2 arg_3 = new C_E2();
+				arg_3.toRight = arg_0.toRight - arg_2.prod;
+				cur.addChild(f_E2(arg_3));
+
+				arg_0.sum = arg_3.sum;
 
 				return cur;
 			}
@@ -102,7 +127,7 @@ public class Gen_math {
 				C_Eps arg_1 = new C_Eps();
 				cur.addChild(f_Eps(arg_1));
 
-				arg_0.sum = 0;
+				arg_0.sum = arg_0.toRight;
 
 				return cur;
 			}
@@ -116,7 +141,7 @@ public class Gen_math {
 
 	private Node f_Eps(C_Eps arg_0) throws ParseException {
 		Node cur = new Node("Eps", (char) -1);
-		for (char c : new char[] { '\uffff', '*', '+', ')' }) {
+		for (char c : new char[] { '\uffff', '*', '+', ')', '/', '-' }) {
 			if (c == curChar) {
 				C__Terminal arg_1 = new C__Terminal("");
 				cur.addChild(new Node("", (char) -1));
@@ -194,19 +219,19 @@ public class Gen_math {
 				C_MaybeDigits arg_2 = new C_MaybeDigits();
 				cur.addChild(f_MaybeDigits(arg_2));
 
-				arg_0.exist = true;
-				arg_0.value = arg_2.exist ? (10 * arg_1.value + arg_2.value)
-						: arg_1.value;
+				arg_0.value = arg_2.pow10 * arg_1.value + arg_2.value;
+				arg_0.pow10 = 10 * arg_2.pow10;
 
 				return cur;
 			}
 		}
-		for (char c : new char[] { '\uffff', '*', '+', ')' }) {
+		for (char c : new char[] { '\uffff', '*', '+', ')', '/', '-' }) {
 			if (c == curChar) {
 				C_Eps arg_1 = new C_Eps();
 				cur.addChild(f_Eps(arg_1));
 
-				arg_0.exist = false;
+				arg_0.value = 0;
+				arg_0.pow10 = 1;
 
 				return cur;
 			}
@@ -228,8 +253,7 @@ public class Gen_math {
 				C_MaybeDigits arg_2 = new C_MaybeDigits();
 				cur.addChild(f_MaybeDigits(arg_2));
 
-				arg_0.value = arg_2.exist ? (10 * arg_1.value + arg_2.value)
-						: arg_1.value;
+				arg_0.value = arg_2.pow10 * arg_1.value + arg_2.value;
 
 				return cur;
 			}
@@ -269,9 +293,10 @@ public class Gen_math {
 				C_F arg_1 = new C_F();
 				cur.addChild(f_F(arg_1));
 				C_T2 arg_2 = new C_T2();
+				arg_2.toRight = arg_1.value;
 				cur.addChild(f_T2(arg_2));
 
-				arg_0.prod = arg_1.value * arg_2.prod;
+				arg_0.prod = arg_2.prod;
 
 				return cur;
 			}
@@ -302,19 +327,45 @@ public class Gen_math {
 				C_F arg_2 = new C_F();
 				cur.addChild(f_F(arg_2));
 				C_T2 arg_3 = new C_T2();
+				arg_3.toRight = arg_0.toRight * arg_2.value;
 				cur.addChild(f_T2(arg_3));
 
-				arg_0.prod = arg_2.value * arg_3.prod;
+				arg_0.prod = arg_3.prod;
 
 				return cur;
 			}
 		}
-		for (char c : new char[] { '\uffff', '+', ')' }) {
+		for (char c : new char[] { '/' }) {
+			if (c == curChar) {
+				while (curChar < (char) 47 || curChar > (char) 47) {
+					if (fs.ignore(curChar)) {
+						curChar = fs.read();
+					} else {
+						throw new ParseException(fs.getPosition(),
+								"" + curChar, "/");
+					}
+				}
+				C__Terminal arg_1 = new C__Terminal("" + curChar);
+				cur.addChild(new Node(
+						"" + StringUtils.bestView(curChar, false), curChar));
+				curChar = fs.read();
+				C_F arg_2 = new C_F();
+				cur.addChild(f_F(arg_2));
+				C_T2 arg_3 = new C_T2();
+				arg_3.toRight = arg_0.toRight / arg_2.value;
+				cur.addChild(f_T2(arg_3));
+
+				arg_0.prod = arg_3.prod;
+
+				return cur;
+			}
+		}
+		for (char c : new char[] { '\uffff', '+', ')', '-' }) {
 			if (c == curChar) {
 				C_Eps arg_1 = new C_Eps();
 				cur.addChild(f_Eps(arg_1));
 
-				arg_0.prod = 1;
+				arg_0.prod = arg_0.toRight;
 
 				return cur;
 			}
@@ -429,7 +480,7 @@ public class Gen_math {
 	}
 
 	class C_E2 {
-		int sum;
+		int toRight, sum;
 	}
 
 	class C_Eps {
@@ -440,8 +491,7 @@ public class Gen_math {
 	}
 
 	class C_MaybeDigits {
-		boolean exist;
-		int value;
+		int value, pow10;
 	}
 
 	class C_Number {
@@ -456,7 +506,7 @@ public class Gen_math {
 	}
 
 	class C_T2 {
-		int prod;
+		int toRight, prod;
 	}
 
 	class C_WS {

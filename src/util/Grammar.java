@@ -3,7 +3,6 @@ package util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 public class Grammar {
@@ -46,7 +45,7 @@ public class Grammar {
 
 	public static void addDefaultRules(List<Rule> ruleList) {
 		// WS
-		for (char c : FileScanner.whiteSpaces()) {
+		for (char c : new char[] { ' ', '\t', '\n', '\r' }) {
 			List<Pair<GrammarUnit, String>> right = new ArrayList<Pair<GrammarUnit, String>>();
 			right.add(new Pair<GrammarUnit, String>(new Terminal(c), null));
 			ruleList.add(new Rule(new NonTerminal("WS"), right, null));
@@ -113,15 +112,32 @@ public class Grammar {
 		return getNonTerm(start.getChild(2));
 	}
 
+	private static char getBoundary(Node boundary) {
+		Node boundType = boundary.getChild(0);
+		if ("QuotedChar".equalsIgnoreCase(boundType.toString())) {
+			return boundType.getChild(1).getChild(0).getChar();
+		}
+		// Int
+		int value = boundType.getChild(0).getChild(0).getChar() - '0';
+		Node maybeDigits = boundType.getChild(1);
+		Node digit = maybeDigits.getChild(0);
+		while (!"Eps".equalsIgnoreCase(digit.toString())) {
+			value = 10 * value + digit.getChild(0).getChar() - '0';
+			maybeDigits = maybeDigits.getChild(1);
+			digit = maybeDigits.getChild(0);
+		}
+		return (char) value;
+	}
+
 	private static Terminal getTerm(Node term) {
 		Node type = term.getChild(0);
 		if ("QuotedChar".equalsIgnoreCase(type.toString())) {
 			return new Terminal(type.getChild(1).getChild(0).getChar());
 		}
 		// range
-		return new Terminal(type.getChild(1).getChild(0).getChild(1)
-				.getChild(0).getChar(), type.getChild(3).getChild(0)
-				.getChild(1).getChild(0).getChar());
+		char from = getBoundary(type.getChild(1));
+		char to = getBoundary(type.getChild(3));
+		return new Terminal(from, to);
 	}
 
 	private static void addUnit(Node unit, List<Pair<GrammarUnit, String>> right) {
@@ -178,24 +194,9 @@ public class Grammar {
 		return ans;
 	}
 
-	private static Set<Character> getDelims(Node delims) {
-		Set<Character> set = FileScanner.whiteSpaces();
-		if ("_".equals(delims.getChild(0).toString())) {
-			Node quotedChars = delims.getChild(1);
-			Node quotedChar = quotedChars.getChild(0);
-			while (!"Eps".equalsIgnoreCase(quotedChar.toString())) {
-				set.add(quotedChar.getChild(1).getChild(0).getChar());
-				quotedChars = quotedChars.getChild(1);
-				quotedChar = quotedChars.getChild(0);
-			}
-		}
-		return set;
-	}
-
-	public static Pair<Grammar, Set<Character>> fromTree(Node root) {
-		return new Pair<Grammar, Set<Character>>(new Grammar(getHeader(root
-				.getChild(0)), getNtDefs(root.getChild(1)), getStart(root
-				.getChild(2)), getRules(root.getChild(3))), getDelims(root
-				.getChild(4)));
+	public static Grammar fromTree(Node root) {
+		return new Grammar(getHeader(root.getChild(0)), getNtDefs(root
+				.getChild(1)), getStart(root.getChild(2)), getRules(root
+				.getChild(3)));
 	}
 }

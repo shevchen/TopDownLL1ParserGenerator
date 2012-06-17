@@ -98,8 +98,7 @@ public class GrammarFileDefinitionParser {
 
 	public static Grammar parseGrammarFileDefinition(String fileName)
 			throws FileNotFoundException, ParseException {
-		RawGrammar raw = getRawGrammar(new FileScanner(fileName, FileScanner
-				.whiteSpaces()));
+		RawGrammar raw = getRawGrammar(new FileScanner(fileName));
 		String header = null;
 		List<Pair<NonTerminal, String>> ntDefs = null;
 		NonTerminal start = new NonTerminal(raw.start.str);

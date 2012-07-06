@@ -2,7 +2,9 @@ $ E { int sum; }
 $ E2 { int toRight, sum; }
 $ T { int prod; }
 $ T2 { int toRight, prod; }
-$ F { int value; }
+$ F { int deg; }
+$ F2 { int deg; }
+$ D { int value; }
 $ Number { int value; }
 $ Digit { int value; }
 $ MaybeDigits { int value, pow10; }
@@ -27,19 +29,27 @@ E2 -> '+' T E2{ $3.toRight = $0.toRight + $2.prod; } : {
 	$0.sum = $0.toRight;
 };
 
-T -> F T2{ $2.toRight = $1.value; } : {
+T -> F T2{ $2.toRight = $1.deg; } : {
 	$0.prod = $2.prod;
 };
 
-T2 -> '*' F T2{ $3.toRight = $0.toRight * $2.value; } : {
+T2 -> '*' F T2{ $3.toRight = $0.toRight * $2.deg; } : {
 	$0.prod = $3.prod;
-} | '/' F T2{ $3.toRight = $0.toRight / $2.value; } : {
+} | '/' F T2{ $3.toRight = $0.toRight / $2.deg; } : {
 	$0.prod = $3.prod;
 } | Eps : {
 	$0.prod = $0.toRight;
 };
 
-F -> '(' E ')' : {
+F -> D F2{ $2.deg = $1.value; } : {
+	$0.deg = $2.deg;
+};
+
+F2 -> '^' D F2{ $3.deg = $2.value; } : {
+	$0.deg = (int) (Math.pow($0.deg, $3.deg) + 0.5);
+} | Eps ;
+
+D -> '(' E ')' : {
 	$0.value = $2.sum;
 } | Number : {
 	$0.value = $1.value;
